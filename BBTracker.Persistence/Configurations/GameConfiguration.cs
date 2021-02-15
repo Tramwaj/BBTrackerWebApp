@@ -13,8 +13,11 @@ namespace BBTracker.Persistence.Configurations
         public void Configure(EntityTypeBuilder<Game> builder)
         {
             builder.ToTable("Games");
-            builder.HasKey(x => x.Id);
-            builder.Property(x => x.Start).IsRequired();           
+            builder.HasKey(g => g.Id);
+            builder.Property(g => g.Start).IsRequired();
+            builder.HasOne(g => g.Owner)
+                .WithMany(u => u.OwnedGames)
+                .HasForeignKey(g => g.OwnerId);
         }
     }
 }
