@@ -58,7 +58,7 @@ namespace BasketStatsWebApp
 
             services.AddSingleton<IPlayerService, PlayerServiceDB>();
             services.AddSingleton<IGameService, GameService>();
-            services.AddSingleton<UserService>();
+            services.AddSingleton<IUserService,UserService>();
 
             services.AddSwaggerGen();
         }

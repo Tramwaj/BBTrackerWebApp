@@ -1,17 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using BBTracker.Contracts.ViewModels;
-using BBTracker.Web.Settings;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
-using BBTracker.App;
-using Microsoft.AspNetCore.Authorization;
+using BBTracker.Web.Settings;
+using BBTracker.Contracts.Services;
+using BBTracker.Contracts.ViewModels;
 
 namespace BBTracker.Web.Controllers
 {
@@ -19,8 +15,8 @@ namespace BBTracker.Web.Controllers
     //[Authorize(Roles = "Admin,User")]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }

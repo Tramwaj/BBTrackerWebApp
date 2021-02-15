@@ -8,29 +8,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BBTracker.Contracts.Services;
+using BBTracker.Persistence.Repos;
 
 namespace BBTracker.App
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private BBTrackerContext _context;
+        private UserRepo _userRepo;
         public UserService()
         {
-            _context = new BBTrackerContext();
+            _userRepo = new UserRepo();
         }
         public async Task<bool> CreateUser(CreateUserViewModel userVM)
         {
-            if (await _context.Users.AnyAsync(x => x.UserName == userVM.UserName))
+            var allUsers = await _userRepo.GetAllUsersAsync();
+            if (allUsers.Any(x => x.UserName == userVM.UserName))
                 return false;
             else
             {
                 var hashedPass = BCrypt.Net.BCrypt.HashPassword(userVM.Password);
-                await _context.Users.AddAsync(new User(
+                await _userRepo.AddAsync(new User(
                     Guid.NewGuid(),
                     userVM.UserName,
                     hashedPass
                     ));
-                await _context.SaveChangesAsync();
                 return true;
             }
         }
@@ -46,8 +48,6 @@ namespace BBTracker.App
                 return true;
         }
 
-        public async Task<User> GetUser(string userName) => await _context
-            .Users
-            .FirstOrDefaultAsync(x => x.UserName == userName);
+        public async Task<User> GetUser(string userName) => await _userRepo.GetUserByNameAsync(userName);            
     }
 }
