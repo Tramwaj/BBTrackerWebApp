@@ -8,11 +8,11 @@ namespace BBTracker.App.Mappers
 {
     class Mapper
     {
-        internal static PlayerDTO CreatePlayerDTO(Player player)
+        internal static FullPlayerDTO CreatePlayerDTO(Player player)
         {
-            return new PlayerDTO(player.Id, player.Name, player.Nick, player.City);
+            return new FullPlayerDTO(player.Id, player.Name, player.Nick, player.City);
         }
-        internal static Player UpdatePlayerFromDTO(Player player, PlayerDTO playerDTO)
+        internal static Player UpdatePlayerFromDTO(Player player, FullPlayerDTO playerDTO)
         {
             player.Name = playerDTO.Name;
             player.Nick = playerDTO.Nick;
