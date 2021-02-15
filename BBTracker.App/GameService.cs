@@ -22,26 +22,31 @@ namespace BBTracker.App
             _gameRepository = new GameRepo();
             _playerRepository = new PlayerRepo();
         }
-        public async Task<NewGameViewModel> NewGame()
+        public async Task<NewGameViewModel> NewGame(NewGamePlayersVM players)
         {
             var game = new Game(Guid.NewGuid(), DateTime.Now);
             await _gameRepository.Add(game);
+            foreach (var player in players.Players)
+            {
+                await AddPlayerToGame(new AddPlayerToGameVM(game.Id, player.Id, player.TeamB));
+            }
+
             return new NewGameViewModel(game.Id, game.Start);
         }
 
-        public async Task<bool> AddPlayerToGame(AddPlayerToGameDTO addPlayerToGameDTO)//(Guid playerId, Guid gameId, bool teamB)
+        public async Task<bool> AddPlayerToGame(AddPlayerToGameVM addPlayerToGameDTO)//(Guid playerId, Guid gameId, bool teamB)
         {
             var player = await _playerRepository.GetPlayerAsync(addPlayerToGameDTO.PlayerId);
             var game = await _gameRepository.GetGameByIdAsync(addPlayerToGameDTO.GameId);
             if (player == null || game == null) return false;
             else
             {
-                await _gameRepository.AddPlayerGame(new PlayerGame
-                    (
-                    player,
-                    game,
+                await _gameRepository.AddPlayerGame(
+                    
+                    player.Id,
+                    game.Id,
                     addPlayerToGameDTO.TeamB
-                    ));
+                    );
                 return true;
 
             }            
@@ -57,7 +62,7 @@ namespace BBTracker.App
             return true;
         }
 
-        public async Task<bool> AddPlayersToGame(ICollection<AddPlayerToGameDTO> players)
+        public async Task<bool> AddPlayersToGame(ICollection<AddPlayerToGameVM> players)
         {
             foreach (var playerDTO in players)
             {
@@ -65,6 +70,16 @@ namespace BBTracker.App
                     return false;
             }
             return true;
+        }
+
+        public Task<bool> StartGame()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> CancelPlay(Guid playId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -19,12 +19,17 @@ namespace BBTracker.Persistence.Repos
         public async Task Add(Game game)
         {
             await _context.Games.AddAsync(game);
+            await _context.SaveChangesAsync();
         }
         public async Task<Game> GetGameByIdAsync(Guid id) => await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
 
-        public async Task AddPlayerGame(PlayerGame playerGame)
+        public async Task AddPlayerGame(Guid playerId, Guid gameId, bool isTeamB)
         {
-            _context.PlayerGames.Add(playerGame);
+            _context.PlayerGames.Add(new PlayerGame(
+                await _context.Players.FirstOrDefaultAsync(p=>p.Id==playerId),
+                await GetGameByIdAsync(gameId),
+                isTeamB
+                ));
             await _context.SaveChangesAsync();
         }
 

@@ -8,17 +8,22 @@ namespace BBTracker.Contracts.Services
 {
     public interface IGameService
     {
-        public Task<NewGameViewModel> NewGame();
-        public Task<bool> AddPlayerToGame(AddPlayerToGameDTO player);
-        public Task<bool> AddPlayersToGame(ICollection<AddPlayerToGameDTO> players);
+        public Task<NewGameViewModel> NewGame(NewGamePlayersVM playerIDs);  
+        //The following is redundant if NewGame starts the game
+        public Task<bool> StartGame(); 
+        public Task<bool> AddPlayerToGame(AddPlayerToGameVM player);
+        public Task<bool> AddPlayersToGame(ICollection<AddPlayerToGameVM> players);
         public Task<bool> EndGame(Guid gameId);
+
+        //public Task<bool> AddPlays(AddPlaysToGameDTO playsDTO);
+        public Task<bool> CancelPlay(Guid playId);
     }
 
     public class GameVM
     {
         public Guid Id { get; set; }
-        public ICollection<PlayerDTO> TeamA { get; set; }
-        public ICollection<PlayerDTO> TeamB { get; set; }
+        public ICollection<FullPlayerDTO> TeamA { get; set; }
+        public ICollection<FullPlayerDTO> TeamB { get; set; }
     }
     
 }
