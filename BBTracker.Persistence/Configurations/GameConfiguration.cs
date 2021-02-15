@@ -1,0 +1,20 @@
+﻿using BBTracker.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+
+namespace BBTracker.Persistence.Configurations
+{
+    class GameConfiguration : IEntityTypeConfiguration<Game>
+    {
+        public void Configure(EntityTypeBuilder<Game> builder)
+        {
+            builder.ToTable("Games");
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Start).IsRequired();           
+        }
+    }
+}
