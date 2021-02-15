@@ -23,21 +23,23 @@ namespace BasketStatsWebApp.Controllers
             _playerService = playerService;
         }
         [HttpGet]
-        public async Task<ActionResult<ICollection<Player>>> Index()
+        public async Task<ActionResult<ICollection<FullPlayerDTO>>> Index()
         {
-            return Ok(await _playerService.GetAllPlayersDTO());
+            return Ok(await _playerService.GetAllPlayersDTO()); 
         }
+
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<PlayerDTO>> GetPlayer(Guid id)
+        public async Task<ActionResult<FullPlayerDTO>> GetPlayer(Guid id)
         {            
             return Ok(await _playerService.GetPlayerById(id));
         }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> AddPlayer([FromBody] PlayerDTO player)
+        public async Task<ActionResult> AddPlayer([FromBody] FullPlayerDTO player)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -61,7 +63,7 @@ namespace BasketStatsWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Editplayer(Guid id, [FromBody] PlayerDTO player)
+        public async Task<ActionResult> Editplayer(Guid id, [FromBody] FullPlayerDTO player)
         {
             if (!ModelState.IsValid)
             {
