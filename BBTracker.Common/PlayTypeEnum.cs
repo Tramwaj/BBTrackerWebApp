@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BBTracker.Common
 {
-    enum PlayTypesEnum
+    public enum PlayTypeEnum
     {
         Assist,
         Block,
@@ -13,6 +13,7 @@ namespace BBTracker.Common
         Steal,
         Substitution,
         Turnover,
-        Foul
+        Foul,
+        Other
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BBTracker.Model.Models
 {
-    public class Steal : Play
+    public class Foul : Play
     {
-        public Player StolenFrom { get; set; }
+        public Player? FouledPlayer { get; set; }
     }
 }

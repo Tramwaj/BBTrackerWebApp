@@ -29,6 +29,7 @@ namespace BBTracker.Persistence
         public DbSet<Player> Players { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<PlayerGame> PlayerGames { get; set; }
+        public DbSet<Play> Plays { get; set; }
         //public DbSet<Assist> Assists { get; set; }
         //public DbSet<FieldGoal> FieldGoals { get; set; }
         //public DbSet<Rebound> Rebounds { get; set; }

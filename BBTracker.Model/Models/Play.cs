@@ -11,6 +11,8 @@ namespace BBTracker.Model.Models
         public Game Game { get; set; }
         public TimeSpan GameTime { get; set; }
         public bool IsTeamB { get; set; }
+        public Guid PlayerId { get; set; }
+        public Guid GameId { get; set; }
 #nullable enable
         public Player? Player { get; set; }
     }
