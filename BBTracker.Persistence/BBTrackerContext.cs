@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-//using System.Text;
 using BBTracker.Model;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using BBTracker.Model.Models;

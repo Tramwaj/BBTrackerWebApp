@@ -1,8 +1,7 @@
 ﻿using BBTracker;
-using BBTracker.App;
 using BBTracker.Contracts.Services;
 using BBTracker.Contracts.ViewModels;
-using BBTracker.Model;
+using BBTracker.Model.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

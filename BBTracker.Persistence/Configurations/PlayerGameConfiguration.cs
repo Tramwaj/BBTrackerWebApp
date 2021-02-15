@@ -1,4 +1,4 @@
-﻿using BBTracker.Model;
+﻿using BBTracker.Model.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

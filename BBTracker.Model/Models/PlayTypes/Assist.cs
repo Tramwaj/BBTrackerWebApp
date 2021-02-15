@@ -1,4 +1,4 @@
-﻿namespace BBTracker.Model
+﻿namespace BBTracker.Model.Models
 {
     public class Assist : Play
     {

@@ -339,3 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /BBTracker.Persistence/connStr.txt
+/klasy.png
+/BBTracker.Web/connStr.txt

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BBTracker.Persistence;
 using BBTracker.Contracts.ViewModels;
-using BBTracker.Model;
+using BBTracker.Model.Models;
 using BBTracker.Contracts.Services;
 using System.Security.Cryptography.X509Certificates;
 using BBTracker.App.Mappers;

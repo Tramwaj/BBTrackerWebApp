@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BBTracker.Model
+namespace BBTracker.Model.Models
 {
     public class Game
     {

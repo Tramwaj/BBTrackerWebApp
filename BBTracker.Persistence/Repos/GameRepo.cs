@@ -1,4 +1,4 @@
-﻿using BBTracker.Model;
+﻿using BBTracker.Model.Models;
 using Microsoft.EntityFrameworkCore;
 using BBTracker.Persistence;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BBTracker.Persistence
+namespace BBTracker.Persistence.Repos
 {
     public class GameRepo
     {

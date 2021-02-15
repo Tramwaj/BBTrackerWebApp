@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace BBTracker.Model
+namespace BBTracker.Model.Models
 {
     public class Player
     {

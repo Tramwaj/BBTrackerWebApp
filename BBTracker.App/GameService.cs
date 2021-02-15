@@ -1,6 +1,6 @@
-﻿using BBTracker.Persistence;
+﻿using BBTracker.Persistence.Repos;
 using BBTracker.Contracts.Services;
-using BBTracker.Model;
+using BBTracker.Model.Models;
 using Microsoft.Data.SqlClient.DataClassification;
 using System;
 using System.Collections.Generic;

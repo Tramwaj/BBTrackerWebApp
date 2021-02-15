@@ -1,4 +1,4 @@
-﻿using BBTracker.Persistence;
+﻿using BBTracker.Persistence.Repos;
 using BBTracker.App.Mappers;
 using BBTracker.Contracts.Services;
 using BBTracker.Contracts.ViewModels;
@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using BBTracker.Model.Models;
 
 namespace BBTracker.App
 {
@@ -39,7 +39,7 @@ namespace BBTracker.App
                 return false;
             else
             {
-                await _playersRepository.Create(new Model.Player(
+                await _playersRepository.Create(new Player(
                     Guid.NewGuid(),
                     player.Name,
                     player.Nick,
@@ -63,12 +63,9 @@ namespace BBTracker.App
             }
         }
 
-
-
-        //2 wycieczki do bazy zamiast jednej
         public async Task<bool> EditPlayer(Guid id, PlayerDTO playerDTO)
         {
-            var entity = await _playersRepository.GetPlayerAsync(playerDTO.Id);
+            var entity = await _playersRepository.GetPlayerAsync(id);
             if (entity == null)
                 return false;
             else

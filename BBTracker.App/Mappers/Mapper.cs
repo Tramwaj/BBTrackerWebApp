@@ -1,5 +1,5 @@
 ﻿using BBTracker.Contracts.ViewModels;
-using BBTracker.Model;
+using BBTracker.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

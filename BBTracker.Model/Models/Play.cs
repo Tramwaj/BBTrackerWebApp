@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BBTracker.Model
+namespace BBTracker.Model.Models
 {
     //staty graczy generują się przy zapytaniu (RAZ [wcześniej miało być zapytanie z DATETIME do bazy o nowsze playsy) )
     // gdy dochodzi play to, to gracze dowiaduja się że będą się musieli odswieżyć 
