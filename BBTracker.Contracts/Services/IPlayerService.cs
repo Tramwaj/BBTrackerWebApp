@@ -8,10 +8,10 @@ namespace BBTracker.Contracts.Services
 {
     public interface IPlayerService
     {        
-        Task<ICollection<PlayerDTO>> GetAllPlayersDTO();
-        Task<bool> AddPlayer(PlayerDTO player);
-        Task<bool> EditPlayer(Guid id, PlayerDTO player);
-        Task<PlayerDTO> GetPlayerById(Guid id);
+        Task<ICollection<FullPlayerDTO>> GetAllPlayersDTO();
+        Task<bool> AddPlayer(FullPlayerDTO player);
+        Task<bool> EditPlayer(Guid id, FullPlayerDTO player);
+        Task<FullPlayerDTO> GetPlayerById(Guid id);
         Task<bool> RemovePlayer(Guid id);
     }
 }

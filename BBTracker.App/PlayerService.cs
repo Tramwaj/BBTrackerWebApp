@@ -25,7 +25,7 @@ namespace BBTracker.App
             
         }
 
-        public bool AddPlayer(PlayerDTO player)
+        public bool AddPlayer(FullPlayerDTO player)
         {
             throw new NotImplementedException();
         }
@@ -35,12 +35,12 @@ namespace BBTracker.App
             throw new NotImplementedException();
         }
 
-        public bool EditPlayer(PlayerDTO player)
+        public bool EditPlayer(FullPlayerDTO player)
         {
             throw new NotImplementedException();
         }
 
-        public ICollection<PlayerDTO> GetAllPlayersDTO()
+        public ICollection<FullPlayerDTO> GetAllPlayersDTO()
         {
             return allPlayers               
                 .Where(x => x.Deleted == false)
@@ -48,10 +48,10 @@ namespace BBTracker.App
                 .ToList();
         }
 
-        public PlayerDTO GetPlayerById(Guid id) => Mapper.CreatePlayerDTO(
+        public FullPlayerDTO GetPlayerById(Guid id) => Mapper.CreatePlayerDTO(
             allPlayers.FirstOrDefault(x => x.Id == id));
 
-        public bool EditPlayer(Guid id, PlayerDTO player)
+        public bool EditPlayer(Guid id, FullPlayerDTO player)
         {
             throw new NotImplementedException();
         }

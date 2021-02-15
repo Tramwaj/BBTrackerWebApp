@@ -20,19 +20,19 @@ namespace BBTracker.App
             _playersRepository = new PlayerRepo();
         }
 
-        public async Task<PlayerDTO> GetPlayerById(Guid id)
+        public async Task<FullPlayerDTO> GetPlayerById(Guid id)
         {
             var entity = await _playersRepository.GetPlayerAsync(id);
-            return new PlayerDTO(entity.Id, entity.Name, entity.Nick, entity.City);
+            return new FullPlayerDTO(entity.Id, entity.Name, entity.Nick, entity.City);
         }
-        public async Task<ICollection<PlayerDTO>> GetAllPlayersDTO()
+        public async Task<ICollection<FullPlayerDTO>> GetAllPlayersDTO()
         {
             var _players = await _playersRepository.GetPlayersAsync();
             return await Task.FromResult(
-                _players.Select(p => new PlayerDTO(p.Id, p.Name, p.Nick, p.City))
+                _players.Select(p => new FullPlayerDTO(p.Id, p.Name, p.Nick, p.City))
                 .ToList());
         }
-        public async Task<bool> AddPlayer(PlayerDTO player)
+        public async Task<bool> AddPlayer(FullPlayerDTO player)
         {
             var players = await _playersRepository.GetPlayersAsync();
             if (players.Any(x => x.Name == player.Name && x.Nick == player.Nick))
@@ -63,7 +63,7 @@ namespace BBTracker.App
             }
         }
 
-        public async Task<bool> EditPlayer(Guid id, PlayerDTO playerDTO)
+        public async Task<bool> EditPlayer(Guid id, FullPlayerDTO playerDTO)
         {
             var entity = await _playersRepository.GetPlayerAsync(id);
             if (entity == null)
