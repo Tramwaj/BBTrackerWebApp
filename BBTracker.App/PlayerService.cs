@@ -44,11 +44,11 @@ namespace BBTracker.App
         {
             return allPlayers               
                 .Where(x => x.Deleted == false)
-                .Select(x => Mapper.CreatePlayerDTO(x))
+                .Select(x => Mapper.CreateFullPlayerDTO(x))
                 .ToList();
         }
 
-        public FullPlayerDTO GetPlayerById(Guid id) => Mapper.CreatePlayerDTO(
+        public FullPlayerDTO GetPlayerById(Guid id) => Mapper.CreateFullPlayerDTO(
             allPlayers.FirstOrDefault(x => x.Id == id));
 
         public bool EditPlayer(Guid id, FullPlayerDTO player)
