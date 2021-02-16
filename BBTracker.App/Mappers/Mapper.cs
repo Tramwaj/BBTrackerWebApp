@@ -8,7 +8,7 @@ namespace BBTracker.App.Mappers
 {
     class Mapper
     {
-        internal static FullPlayerDTO CreatePlayerDTO(Player player)
+        internal static FullPlayerDTO CreateFullPlayerDTO(Player player)
         {
             return new FullPlayerDTO(player.Id, player.Name, player.Nick, player.City);
         }
@@ -19,5 +19,6 @@ namespace BBTracker.App.Mappers
             player.City = playerDTO.City;
             return player;
         }
+      
     }
 }
