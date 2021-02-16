@@ -9,6 +9,8 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using BBTracker.Contracts.ViewModels;
+using System.Security.Claims;
+using BBTracker.App.Mappers;
 
 namespace BBTracker.App
 {
@@ -28,7 +30,6 @@ namespace BBTracker.App
         {
             var _user = await _userRepo.GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
-            throw new NotImplementedException();
             await _gameRepo.Add(_game);
             foreach (var player in players.Players)
             {
@@ -55,6 +56,7 @@ namespace BBTracker.App
 
             }
         }
+        
         public async Task<bool> EndGame(Guid gameId)
         {
             //TODO: podliczenie wyniku
@@ -76,19 +78,27 @@ namespace BBTracker.App
             return true;
         }
 
-        public Task<bool> StartGame()
+        public async Task<bool> StartGame()
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> CancelPlay(Guid playId)
+        public async Task<bool> CancelPlay(Guid playId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<SetupGameViewModel> GetGameViewModel(string userName)
+        public async Task<SetupGameViewModel> GetGameViewModel(ClaimsPrincipal user)
         {
-            throw new NotImplementedException();
+            string userName = user.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.NameIdentifier).Value;
+            var players = await _playerRepo.GetPlayersAsync();
+                
+            return new SetupGameViewModel 
+            {
+                Players = players
+                .Select(p => Mapper.CreateFullPlayerDTO(p))
+                .ToList() 
+            };
         }
     }
 }

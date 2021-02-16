@@ -1,6 +1,7 @@
 ﻿using BBTracker.Contracts.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace BBTracker.Contracts.Services
 
         //public Task<bool> AddPlays(AddPlaysToGameDTO playsDTO);
         public Task<bool> CancelPlay(Guid playId);
-        Task<SetupGameViewModel> GetGameViewModel(string userName);
+        Task<SetupGameViewModel> GetGameViewModel(ClaimsPrincipal user);
     }
 
     public class GameVM

@@ -16,10 +16,14 @@ namespace BBTracker.Model.Models
 
         public ISet<Play> Plays { get; set; }
         public ISet<PlayerGame> PlayerGames { get; set; }
-        //public Game(){}
-        public Game(Guid id, DateTime start)
+
+        public User Owner { get; set; }
+        public Guid OwnerId { get; set; }
+        
+        public Game(Guid id,Guid ownerId, DateTime start)
         {
             Id = id;
+            OwnerId = ownerId;
             Start = start;
             //PlayerGames = playerGames;
         }

@@ -52,7 +52,8 @@ namespace BasketStatsWebApp
                         IssuerSigningKey = new SymmetricSecurityKey
                         (
                             Encoding.UTF8.GetBytes(jwtSettings.Secret)
-                        )
+                        ),
+                        SaveSigninToken = true
                     };
                 });
 
