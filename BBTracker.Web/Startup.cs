@@ -1,6 +1,8 @@
 using BBTracker.App;
+using BBTracker.App.Services;
 using BBTracker.Contracts.Services;
 using BBTracker.Contracts.ViewModels;
+using BBTracker.Persistence.Repos;
 using BBTracker.Web.Settings;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -57,9 +59,16 @@ namespace BasketStatsWebApp
                     };
                 });
 
-            services.AddSingleton<IPlayerService, PlayerServiceDB>();
+            services.AddSingleton<IPlayerService, PlayerService>();
             services.AddSingleton<IGameService, GameService>();
             services.AddSingleton<IUserService,UserService>();
+            services.AddSingleton<IPlayParser, PlayParser>();
+            services.AddSingleton<ISubstitutionService, SubstitutionService>();
+
+            services.AddSingleton<GameRepo>();
+            services.AddSingleton<PlayerRepo>();
+            services.AddSingleton<PlayRepo>();
+            services.AddSingleton<UserRepo>();
 
             services.AddSwaggerGen();
         }

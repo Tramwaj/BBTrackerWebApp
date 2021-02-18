@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using BBTracker.Contracts.ViewModels;
 using System.Security.Claims;
 using BBTracker.App.Mappers;
+using BBTracker.App.Services;
 
 namespace BBTracker.App
 {
@@ -20,43 +21,43 @@ namespace BBTracker.App
         private readonly GameRepo _gameRepo;
         private readonly PlayerRepo _playerRepo;
         private readonly UserService _userRepo;
-        public GameService() //to do DI jeszcze wrzucić
+        private readonly IPlayParser _playReader;
+        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, UserService userRepo) //to do DI jeszcze wrzucić
         {
-            _gameRepo = new GameRepo();
-            _playerRepo = new PlayerRepo();
-            _userRepo = new UserService();
+            _gameRepo = gameRepo;
+            _playerRepo =  playerRepo;
+            _userRepo =  userRepo;
+            _playReader = playReader;
         }
-        public async Task<NewGameViewModel> NewGame(NewGamePlayersVM players, string userName)
+        public async Task<NewGameViewModel> NewGame(GamePlayersVM players, string userName)
         {
             var _user = await _userRepo.GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
-            await _gameRepo.Add(_game);
+            await _gameRepo.StartGameAsync(_game);
             foreach (var player in players.Players)
             {
                 await AddPlayerToGame(new AddPlayerToGameVM(_game.Id, player.Id, player.TeamB));
+                await _gameRepo.AddSubstitution(new Substitution(Guid.NewGuid(), _game.Start, new TimeSpan(0), player.Id, _game.Id, false));
             }
 
             return new NewGameViewModel(_game.Id, _game.Start);
         }
 
+        //todo: from here should come the signal to refresh Player's Stats next time it's needed
         public async Task<bool> AddPlayerToGame(AddPlayerToGameVM addPlayerToGameDTO)//(Guid playerId, Guid gameId, bool teamB)
         {
             var _player = await _playerRepo.GetPlayerAsync(addPlayerToGameDTO.PlayerId);
             var _game = await _gameRepo.GetGameByIdAsync(addPlayerToGameDTO.GameId);
             if (_player == null || _game == null) return false;
             else
-            {
+            {                
                 await _gameRepo.AddPlayerGame(
-
-                    _player.Id,
-                    _game.Id,
-                    addPlayerToGameDTO.TeamB
+                    new PlayerGame(_player,_game,addPlayerToGameDTO.TeamB)
                     );
                 return true;
-
             }
         }
-        
+
         public async Task<bool> EndGame(Guid gameId)
         {
             //TODO: podliczenie wyniku
@@ -77,28 +78,47 @@ namespace BBTracker.App
             }
             return true;
         }
-
-        public async Task<bool> StartGame()
+        public async Task<SetupGameViewModel> GetGameViewModel(ClaimsPrincipal user)
         {
-            throw new NotImplementedException();
+            string userName = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+            var players = await _playerRepo.GetPlayersAsync();
+
+            return new SetupGameViewModel
+            {
+                Players = players
+                .Select(p => Mapper.CreateFullPlayerDTO(p))
+                .ToList()
+            };
         }
+
+        public async Task<bool> AddPlays(AddPlaysToGameViewModel playsVM)
+        {
+            var _game = await _gameRepo.GetGameByIdAsync(playsVM.GameId);
+            if (_game.End != null) return false;
+                //todo: make async
+            var _plays = _playReader.ReadPlaysBundle(playsVM.playDTOs, playsVM.GameId);
+            //TODO: check if game ended
+            if (_plays == null) return await Task.FromResult(false);
+            else
+            {
+                foreach (var _play in _plays)
+                {
+                    await _gameRepo.AddPlay(_play);
+                }
+                    return await Task.FromResult(true);
+            }
+
+        }
+
 
         public async Task<bool> CancelPlay(Guid playId)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<SetupGameViewModel> GetGameViewModel(ClaimsPrincipal user)
+        public async Task<bool> StartGame()
         {
-            string userName = user.Claims.FirstOrDefault(c=>c.Type == ClaimTypes.NameIdentifier).Value;
-            var players = await _playerRepo.GetPlayersAsync();
-                
-            return new SetupGameViewModel 
-            {
-                Players = players
-                .Select(p => Mapper.CreateFullPlayerDTO(p))
-                .ToList() 
-            };
+            throw new NotImplementedException();
         }
     }
 }

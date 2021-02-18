@@ -14,4 +14,8 @@
     <ProjectReference Include="..\BBtracker.Model\BBTracker.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DBInterfaces\" />
+  </ItemGroup>
+
 </Project>

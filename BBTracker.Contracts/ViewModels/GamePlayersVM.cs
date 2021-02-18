@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace BBTracker.Contracts.ViewModels
 {
-    public class NewGamePlayersVM
+    public class GamePlayersVM
     {
-        public ICollection<NewGamePlayerDTO> Players { get; set; }
+        public ICollection<GamePlayerDTO> Players { get; set; }
     }
-    public class NewGamePlayerDTO
+    public class GamePlayerDTO
     {
         public Guid Id { get; set; }
         public bool TeamB { get; set; }
+        public bool OnCourt { get; set; }
     }
-    public class NewGamePlayersVMValidator : AbstractValidator<NewGamePlayersVM>
+    public class NewGamePlayersVMValidator : AbstractValidator<GamePlayersVM>
     {
         public NewGamePlayersVMValidator()
         {

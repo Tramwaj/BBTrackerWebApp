@@ -12,10 +12,10 @@ using BBTracker.Model.Models;
 
 namespace BBTracker.App
 {
-    public class PlayerServiceDB : IPlayerService
+    public class PlayerService : IPlayerService
     {
         private readonly PlayerRepo _playersRepository;
-        public PlayerServiceDB()
+        public PlayerService()
         {
             _playersRepository = new PlayerRepo();
         }

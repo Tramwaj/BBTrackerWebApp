@@ -11,7 +11,7 @@ using BBTracker.App.Mappers;
 
 namespace BBTracker.App
 {
-    public class PlayerService// : IPlayerService
+    public class PlayerServiceNoDB// : IPlayerService
     {
         private static ICollection<Player> allPlayers = new[]
            {
@@ -20,7 +20,7 @@ namespace BBTracker.App
                 new Player(Guid.NewGuid(), "Filip", "OłkiPołk")
             };
         //private readonly PlayerRepo _playerRepo;
-        public PlayerService()
+        public PlayerServiceNoDB()
         {
             
         }

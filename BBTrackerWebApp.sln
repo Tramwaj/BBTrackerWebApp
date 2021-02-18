@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBTracker.Web", "BBTracker.Web\BBTracker.Web.csproj", "{5D33F9C2-836B-4D1B-9382-A759E3602D29}"
+	ProjectSection(ProjectDependencies) = postProject
+		{31D30ECD-2946-430E-96EB-1F033871E691} = {31D30ECD-2946-430E-96EB-1F033871E691}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBTracker.Model", "BBtracker.Model\BBTracker.Model.csproj", "{15DCFC03-4D00-4363-934C-91B11365954D}"
 EndProject
@@ -18,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBTracker.App", "BBTracker.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBTracker.Contracts", "BBtracker.Contracts\BBTracker.Contracts.csproj", "{A03E15F4-9D04-4253-AD48-BEDB98F2C5DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BBTracker.Common", "BBTracker.Common\BBTracker.Common.csproj", "{FCD20A31-C5F2-4051-8A51-36159D2A0EEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BBTracker.Common", "BBTracker.Common\BBTracker.Common.csproj", "{FCD20A31-C5F2-4051-8A51-36159D2A0EEC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
