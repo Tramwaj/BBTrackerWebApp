@@ -6,14 +6,12 @@ namespace BBTracker.Common
 {
     public enum PlayTypeEnum
     {
-        Assist,
-        Block,
-        FieldGoal,
-        Rebound,
-        Steal,
-        Substitution,
-        Turnover,
-        Foul,
-        Other
+        assist,
+        block,
+        fieldgoal,
+        rebound,
+        steal,
+        turnover,
+        foul,
     }
 }
