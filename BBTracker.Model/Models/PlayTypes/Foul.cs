@@ -8,6 +8,15 @@ namespace BBTracker.Model.Models
 {
     public class Foul : Play
     {
-        public Player? FouledPlayer { get; set; }
+        public Player FouledPlayer { get; }
+        public Foul()
+        {
+
+        }
+
+        public Foul(Guid id, DateTime time, bool isTeamB, Guid playerId, Guid gameId, Player fouledPlayer) : base(id, time, isTeamB, playerId, gameId)
+        {
+            FouledPlayer = fouledPlayer;
+        }
     }
 }

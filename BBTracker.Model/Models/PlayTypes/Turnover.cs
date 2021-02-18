@@ -1,9 +1,16 @@
-﻿namespace BBTracker.Model.Models
+﻿using System;
+
+namespace BBTracker.Model.Models
 {
     public class Turnover : Play
     {
-        public Player TurnoverCauser { get; set; }
+        public Turnover()
+        {
 
+        }
+
+        public Turnover(Guid id, DateTime time, bool isTeamB, Guid playerId, Guid gameId) : base(id, time, isTeamB, playerId, gameId){}
+        
     }
 
 }

@@ -4,14 +4,16 @@ using BBTracker.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBTracker.Persistence.Migrations
 {
     [DbContext(typeof(BBTrackerContext))]
-    partial class BBTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20210218175002_AddFieldGoalProps")]
+    partial class AddFieldGoalProps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -233,9 +235,6 @@ namespace BBTracker.Persistence.Migrations
 
                     b.Property<Guid>("FieldGoalReboundedId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsOffensive")
-                        .HasColumnType("bit");
 
                     b.HasIndex("FieldGoalReboundedId");
 

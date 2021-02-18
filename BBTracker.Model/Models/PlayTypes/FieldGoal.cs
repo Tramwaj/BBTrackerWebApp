@@ -1,19 +1,27 @@
-﻿namespace BBTracker.Model.Models
-{
-    //public class CheckOut
-    //{
-    //    public int id { get; set; }     
-    //    public DateTime Time { get; set; }
-    //    public Game Game { get; set; }
-    //    public TimeSpan GameTime { get; set; }        
-    //    public Player Player { get; set; }
-    //}
+﻿using System;
+
+namespace BBTracker.Model.Models
+{    
     public class FieldGoal : Play
     {
-        public int Points { get; set; }
-        public bool Made { get; set; }
-        public bool WasBlocked { get; set; }
-        public bool WasAssisted { get; set; }
+        public int Points { get; }
+        public bool Made { get; }
+        public bool WasBlocked { get; }
+        public bool WasAssisted { get; }
+
+        public FieldGoal()
+        {
+
+        }
+
+        public FieldGoal(Guid id, DateTime time, bool isTeamB, Guid playerId, Guid gameId, int points, bool made, bool wasBlocked, bool wasAssisted) : base(id, time, isTeamB, playerId, gameId)
+        {
+            Points = points;
+            Made = made;
+            WasBlocked = wasBlocked;
+            WasAssisted = wasAssisted;
+        }
     }
+
 
 }

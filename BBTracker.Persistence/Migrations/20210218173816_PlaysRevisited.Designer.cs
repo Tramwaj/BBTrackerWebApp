@@ -4,14 +4,16 @@ using BBTracker.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBTracker.Persistence.Migrations
 {
     [DbContext(typeof(BBTrackerContext))]
-    partial class BBTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20210218173816_PlaysRevisited")]
+    partial class PlaysRevisited
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,18 +207,6 @@ namespace BBTracker.Persistence.Migrations
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
 
-                    b.Property<bool>("Made")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("WasAssisted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WasBlocked")
-                        .HasColumnType("bit");
-
                     b.HasDiscriminator().HasValue(2);
                 });
 
@@ -233,9 +223,6 @@ namespace BBTracker.Persistence.Migrations
 
                     b.Property<Guid>("FieldGoalReboundedId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsOffensive")
-                        .HasColumnType("bit");
 
                     b.HasIndex("FieldGoalReboundedId");
 

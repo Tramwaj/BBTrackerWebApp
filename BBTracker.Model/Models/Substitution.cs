@@ -1,30 +1,33 @@
 ﻿using System;
 
 namespace BBTracker.Model.Models
-{    
-    abstract public class Play
+{
+    public class Substitution
     {
         public Guid Id { get; }
         public DateTime Time { get; }
-        public Game Game { get; set; }
         public TimeSpan GameTime { get; }
-        public bool IsTeamB { get; }
         public Guid PlayerId { get; }
         public Guid GameId { get; }
-        public Player Player { get; set; }
 
-        public Play()
+        public Player Player { get; set; }
+        public Game Game { get; set; }
+        public bool SubbedIn { get; }
+
+        public Substitution()
         {
+
         }
 
-        public Play(Guid id, DateTime time, bool isTeamB, Guid playerId, Guid gameId)
+        public Substitution(Guid id, DateTime time, TimeSpan gameTime, Guid playerId, Guid gameId, bool subbedOut)
         {
             Id = id;
             Time = time;
-            //GameTime = gameTime;
-            IsTeamB = isTeamB;
+            GameTime = gameTime;
             PlayerId = playerId;
             GameId = gameId;
+            SubbedIn = subbedOut;
         }
     }
+
 }

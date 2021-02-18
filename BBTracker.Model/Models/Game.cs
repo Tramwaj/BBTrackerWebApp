@@ -14,8 +14,9 @@ namespace BBTracker.Model.Models
         public int ScoreA { get; set; }
         public int ScoreB { get; set; }
 
-        public ISet<Play> Plays { get; set; }
-        public ISet<PlayerGame> PlayerGames { get; set; }
+        public ICollection<Play> Plays { get; set; }
+        public ICollection<PlayerGame> PlayerGames { get; set; }
+        public ICollection<Substitution> Substitutions { get; set; }
 
         public User Owner { get; set; }
         public Guid OwnerId { get; set; }
@@ -31,8 +32,10 @@ namespace BBTracker.Model.Models
         {
             PlayerGames.Add(playerGame);
         }
+
         public void AddPlay(Play play)
         {
+            if (Plays == null) Plays = new List<Play>();
             Plays.Add(play);
         }
     }

@@ -4,14 +4,16 @@ using BBTracker.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBTracker.Persistence.Migrations
 {
     [DbContext(typeof(BBTrackerContext))]
-    partial class BBTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20210217180435_temp-identity-error")]
+    partial class tempidentityerror
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace BBTracker.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("GameId")
+                    b.Property<Guid?>("GameId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<TimeSpan>("GameTime")
@@ -65,7 +67,7 @@ namespace BBTracker.Persistence.Migrations
                     b.Property<int>("PlayType")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("PlayerId")
+                    b.Property<Guid?>("PlayerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Time")
@@ -73,13 +75,13 @@ namespace BBTracker.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GameId");
+                    b.HasIndex("GameId1");
 
                     b.HasIndex("PlayerId");
 
                     b.ToTable("Plays");
 
-                    b.HasDiscriminator<int>("PlayType");
+                    b.HasDiscriminator<int>("PlayType").HasValue(8);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Player", b =>
@@ -128,33 +130,6 @@ namespace BBTracker.Persistence.Migrations
                     b.ToTable("PlayerGames");
                 });
 
-            modelBuilder.Entity("BBTracker.Model.Models.Substitution", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("GameId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("SubbedOut")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("Substitutions");
-                });
-
             modelBuilder.Entity("BBTracker.Model.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -181,22 +156,12 @@ namespace BBTracker.Persistence.Migrations
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
 
-                    b.Property<Guid>("FieldGoalId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("FieldGoalId");
-
                     b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Block", b =>
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
-
-                    b.Property<Guid>("FieldGoalBlockedId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasIndex("FieldGoalBlockedId");
 
                     b.HasDiscriminator().HasValue(1);
                 });
@@ -205,18 +170,6 @@ namespace BBTracker.Persistence.Migrations
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
 
-                    b.Property<bool>("Made")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Points")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("WasAssisted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("WasBlocked")
-                        .HasColumnType("bit");
-
                     b.HasDiscriminator().HasValue(2);
                 });
 
@@ -224,20 +177,12 @@ namespace BBTracker.Persistence.Migrations
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
 
-                    b.HasDiscriminator().HasValue(6);
+                    b.HasDiscriminator().HasValue(7);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Rebound", b =>
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
-
-                    b.Property<Guid>("FieldGoalReboundedId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsOffensive")
-                        .HasColumnType("bit");
-
-                    b.HasIndex("FieldGoalReboundedId");
 
                     b.HasDiscriminator().HasValue(3);
                 });
@@ -249,11 +194,18 @@ namespace BBTracker.Persistence.Migrations
                     b.HasDiscriminator().HasValue(4);
                 });
 
-            modelBuilder.Entity("BBTracker.Model.Models.Turnover", b =>
+            modelBuilder.Entity("BBTracker.Model.Models.Substitution", b =>
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
 
                     b.HasDiscriminator().HasValue(5);
+                });
+
+            modelBuilder.Entity("BBTracker.Model.Models.Turnover", b =>
+                {
+                    b.HasBaseType("BBTracker.Model.Models.Play");
+
+                    b.HasDiscriminator().HasValue(6);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Game", b =>
@@ -271,19 +223,13 @@ namespace BBTracker.Persistence.Migrations
                 {
                     b.HasOne("BBTracker.Model.Models.Game", "Game")
                         .WithMany("Plays")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("GameId1");
 
-                    b.HasOne("BBTracker.Model.Models.Player", "Player")
+                    b.HasOne("BBTracker.Model.Models.Player", null)
                         .WithMany("Plays")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerId");
 
                     b.Navigation("Game");
-
-                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.PlayerGame", b =>
@@ -305,65 +251,11 @@ namespace BBTracker.Persistence.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("BBTracker.Model.Models.Substitution", b =>
-                {
-                    b.HasOne("BBTracker.Model.Models.Game", "Game")
-                        .WithMany("Substitutions")
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BBTracker.Model.Models.Player", "Player")
-                        .WithMany("Substitutions")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Game");
-
-                    b.Navigation("Player");
-                });
-
-            modelBuilder.Entity("BBTracker.Model.Models.Assist", b =>
-                {
-                    b.HasOne("BBTracker.Model.Models.FieldGoal", "FieldGoal")
-                        .WithMany()
-                        .HasForeignKey("FieldGoalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FieldGoal");
-                });
-
-            modelBuilder.Entity("BBTracker.Model.Models.Block", b =>
-                {
-                    b.HasOne("BBTracker.Model.Models.FieldGoal", "FieldGoalBlocked")
-                        .WithMany()
-                        .HasForeignKey("FieldGoalBlockedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FieldGoalBlocked");
-                });
-
-            modelBuilder.Entity("BBTracker.Model.Models.Rebound", b =>
-                {
-                    b.HasOne("BBTracker.Model.Models.FieldGoal", "FieldGoalRebounded")
-                        .WithMany()
-                        .HasForeignKey("FieldGoalReboundedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("FieldGoalRebounded");
-                });
-
             modelBuilder.Entity("BBTracker.Model.Models.Game", b =>
                 {
                     b.Navigation("PlayerGames");
 
                     b.Navigation("Plays");
-
-                    b.Navigation("Substitutions");
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Player", b =>
@@ -371,8 +263,6 @@ namespace BBTracker.Persistence.Migrations
                     b.Navigation("PlayerGames");
 
                     b.Navigation("Plays");
-
-                    b.Navigation("Substitutions");
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.User", b =>

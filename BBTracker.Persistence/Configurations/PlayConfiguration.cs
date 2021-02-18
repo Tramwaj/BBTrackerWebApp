@@ -17,25 +17,22 @@ namespace BBTracker.Persistence.Configurations
             builder.ToTable("Plays");
             builder.HasKey(p => p.Id);
             builder.HasDiscriminator<PlayTypeEnum>("PlayType")
-                .HasValue<Assist>(PlayTypeEnum.Assist)
-                .HasValue<Block>(PlayTypeEnum.Block)
-                .HasValue<FieldGoal>(PlayTypeEnum.FieldGoal)
-                .HasValue<Rebound>(PlayTypeEnum.Rebound)
-                .HasValue<Steal>(PlayTypeEnum.Steal)
-                .HasValue<Substitution>(PlayTypeEnum.Substitution)
-                .HasValue<Turnover>(PlayTypeEnum.Turnover)
-                .HasValue<Foul>(PlayTypeEnum.Foul)
-                .HasValue<Play>(PlayTypeEnum.Other);
+                .HasValue<Assist>(PlayTypeEnum.assist)
+                .HasValue<Block>(PlayTypeEnum.block)
+                .HasValue<FieldGoal>(PlayTypeEnum.fieldgoal)
+                .HasValue<Rebound>(PlayTypeEnum.rebound)
+                .HasValue<Steal>(PlayTypeEnum.steal)
+                .HasValue<Turnover>(PlayTypeEnum.turnover)
+                .HasValue<Foul>(PlayTypeEnum.foul);
             builder.Property(p => p.Time)
-                .IsRequired();
+                .IsRequired();   
+            
             builder.HasOne(p => p.Game)
                 .WithMany(g => g.Plays)
                 .HasForeignKey(p => p.GameId);
             builder.HasOne(p => p.Player)
                 .WithMany(p => p.Plays)
                 .HasForeignKey(p => p.PlayerId);
-            builder.Property(p => p.GameTime)
-                .IsRequired();
             builder.Property(p => p.GameTime)
                 .IsRequired();
         }
