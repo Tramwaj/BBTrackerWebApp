@@ -20,10 +20,10 @@ namespace BBTracker.App
         //todo: !!! Services z repo
         private readonly GameRepo _gameRepo;
         private readonly PlayerRepo _playerRepo;
-        private readonly UserService _userRepo;
+        private readonly IUserService _userRepo;
         private readonly IPlayParser _playReader;
         private readonly IPlayingTimeService _playingTimeService;
-        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, UserService userRepo, PlayingTimeService playerService) //to do DI jeszcze wrzucić
+        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, IUserService userRepo, IPlayingTimeService playerService) //to do DI jeszcze wrzucić
         {
             _gameRepo = gameRepo;
             _playerRepo =  playerRepo;
@@ -35,11 +35,12 @@ namespace BBTracker.App
         {
             var _user = await _userRepo.GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
-            await _gameRepo.StartGameAsync(_game);
+            await _gameRepo.NewGameAsync(_game);
             foreach (var player in players.Players)
             {
-                await _playingTimeService.AddSubstitution(new AddSubstitutionViewModel(_game.Id,player.Id,true));
                 await AddPlayerToGame(new AddPlayerToGameVM(_game.Id, player.Id, player.TeamB));
+                if (player.OnCourt)
+                    await _playingTimeService.AddSubstitution(new AddSubstitutionViewModel(_game.Id,player.Id,true));
             }
 
             return new NewGameViewModel(_game.Id, _game.Start);
@@ -54,7 +55,7 @@ namespace BBTracker.App
             else
             {                
                 await _gameRepo.AddPlayerGame(
-                    new PlayerGame(_player,_game,addPlayerToGameDTO.TeamB)
+                    new PlayerGame(_player.Id,_game.Id,addPlayerToGameDTO.TeamB)
                     );
                 return true;
             }
@@ -99,14 +100,15 @@ namespace BBTracker.App
             if (_game.End != null) return false;
                 //todo: make async
             var _plays = _playReader.ReadPlaysBundle(playsVM.playDTOs, playsVM.GameId);
-            //TODO: check if game ended
+
+            if (_plays.Any(p => _playingTimeService.PlayerIsOnTheFloor(p.PlayerId, p.GameId) == Task.FromResult(false)))
+                return await Task.FromResult(false);
             if (_plays == null) return await Task.FromResult(false);
             
             else
             {
                 foreach (var _play in _plays)
                 {
-                   // await 
                     await _gameRepo.AddPlay(_play);
                 }
                     return await Task.FromResult(true);

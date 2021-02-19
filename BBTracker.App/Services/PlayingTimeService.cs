@@ -13,6 +13,10 @@ namespace BBTracker.App.Services
     public class PlayingTimeService : IPlayingTimeService
     {
         private readonly SubstitutionRepo _subRepo;
+        public PlayingTimeService(SubstitutionRepo subRepo)
+        {
+            _subRepo = subRepo;
+        }
 
         public async Task<bool> AddSubstitution(AddSubstitutionViewModel subVM)
         {
@@ -39,10 +43,11 @@ namespace BBTracker.App.Services
         }
         public async Task<bool> PlayerIsOnTheFloor(Guid playerId, Guid gameId)
         {
-            var _lastsub = await _subRepo.GetLastSubByPlayerGame(playerId,gameId);
-            if (_lastsub == null || !_lastsub.SubbedIn)
+            var _playerSubs = (await _subRepo.GetPlayerGameSubstitutions(playerId,gameId));
+            if (!_playerSubs.Any()) 
                 return false;
-
+            if (!_playerSubs.LastOrDefault().SubbedIn)
+                return false;
             else return true;
         }
     }

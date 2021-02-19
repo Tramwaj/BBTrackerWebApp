@@ -9,6 +9,7 @@ namespace BBTracker.Contracts.Services
 {
     public interface IPlayingTimeService
     {
-        Task<bool> AddSubstitution(AddSubstitutionViewModel subvm);
+        public Task<bool> AddSubstitution(AddSubstitutionViewModel subvm);
+        public Task<bool> PlayerIsOnTheFloor(Guid playerId, Guid gameId);
     }
 }
