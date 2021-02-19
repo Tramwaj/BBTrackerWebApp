@@ -19,8 +19,8 @@ namespace BBTracker.Web.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
-        private readonly ISubstitutionService _substitutionService;
-        public GameController(IGameService gameService, ISubstitutionService substitutionService )
+        private readonly IPlayingTimeService _substitutionService;
+        public GameController(IGameService gameService, IPlayingTimeService substitutionService )
         {
             _gameService = gameService;
             _substitutionService = substitutionService;
@@ -82,7 +82,7 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> AddSubstitution([FromBody] AddSubstitutionViewModel subVM)
         {
-            if (await _substitutionService.AddSubstitution(subvm))
+            if (await _substitutionService.AddSubstitution(subVM))
                 return Ok();
             return BadRequest();
         }

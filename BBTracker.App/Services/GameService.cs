@@ -17,17 +17,19 @@ namespace BBTracker.App
 {
     public class GameService : IGameService
     {
-
+        //todo: !!! Services z repo
         private readonly GameRepo _gameRepo;
         private readonly PlayerRepo _playerRepo;
         private readonly UserService _userRepo;
         private readonly IPlayParser _playReader;
-        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, UserService userRepo) //to do DI jeszcze wrzucić
+        private readonly IPlayingTimeService _playingTimeService;
+        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, UserService userRepo, PlayingTimeService playerService) //to do DI jeszcze wrzucić
         {
             _gameRepo = gameRepo;
             _playerRepo =  playerRepo;
             _userRepo =  userRepo;
             _playReader = playReader;
+            _playingTimeService = playerService;
         }
         public async Task<NewGameViewModel> NewGame(GamePlayersVM players, string userName)
         {
@@ -36,8 +38,8 @@ namespace BBTracker.App
             await _gameRepo.StartGameAsync(_game);
             foreach (var player in players.Players)
             {
+                await _playingTimeService.AddSubstitution(new AddSubstitutionViewModel(_game.Id,player.Id,true));
                 await AddPlayerToGame(new AddPlayerToGameVM(_game.Id, player.Id, player.TeamB));
-                await _gameRepo.AddSubstitution(new Substitution(Guid.NewGuid(), _game.Start, new TimeSpan(0), player.Id, _game.Id, false));
             }
 
             return new NewGameViewModel(_game.Id, _game.Start);
@@ -99,10 +101,12 @@ namespace BBTracker.App
             var _plays = _playReader.ReadPlaysBundle(playsVM.playDTOs, playsVM.GameId);
             //TODO: check if game ended
             if (_plays == null) return await Task.FromResult(false);
+            
             else
             {
                 foreach (var _play in _plays)
                 {
+                   // await 
                     await _gameRepo.AddPlay(_play);
                 }
                     return await Task.FromResult(true);

@@ -11,11 +11,9 @@ namespace BBTracker.Persistence.Repos
 {
     public class GameRepo
     {
-        private BBTrackerContext _context;
-        public GameRepo()
-        {
-            _context = new BBTrackerContext();
-        }
+        private readonly BBTrackerContext _context;
+        public GameRepo() => _context = new BBTrackerContext();
+
         public async Task StartGameAsync(Game game)
         {
             await _context.Games.AddAsync(game);
@@ -42,12 +40,6 @@ namespace BBTracker.Persistence.Repos
             await _context.Plays.AddAsync(play);
             
             await _context.SaveChangesAsync();
-        }
-        //todo: to own repo?
-        public async Task AddSubstitution(Substitution sub)
-        {
-            await _context.Substitutions.AddAsync(sub);
-        }
-        public 
+        }        
     }
 }

@@ -63,7 +63,7 @@ namespace BasketStatsWebApp
             services.AddSingleton<IGameService, GameService>();
             services.AddSingleton<IUserService,UserService>();
             services.AddSingleton<IPlayParser, PlayParser>();
-            services.AddSingleton<ISubstitutionService, SubstitutionService>();
+            services.AddSingleton<IPlayingTimeService, PlayingTimeService>();
 
             services.AddSingleton<GameRepo>();
             services.AddSingleton<PlayerRepo>();
