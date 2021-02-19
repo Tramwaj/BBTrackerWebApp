@@ -31,8 +31,9 @@ namespace BBTracker.App
             _playReader = playReader;
             _playingTimeService = playerService;
         }
-        public async Task<NewGameViewModel> NewGame(GamePlayersVM players, string userName)
+        public async Task<NewGameViewModel> NewGame(GamePlayersVM players, IEnumerable<Claim> userClaims)
         {
+            string userName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var _user = await _userRepo.GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
             await _gameRepo.NewGameAsync(_game);
@@ -67,6 +68,8 @@ namespace BBTracker.App
             var game = await _gameRepo.GetGameByIdAsync(gameId);
             if (game == null)
                 return false;
+            if (game.End != null)
+                return false;
             var end = DateTime.Now;
             await _gameRepo.UpdateEndTime(gameId, end);
             return true;
@@ -99,13 +102,17 @@ namespace BBTracker.App
             var _game = await _gameRepo.GetGameByIdAsync(playsVM.GameId);
             if (_game.End != null) return false;
                 //todo: make async
+                //todo: validate input
             var _plays = _playReader.ReadPlaysBundle(playsVM.playDTOs, playsVM.GameId);
 
-            if (_plays.Any(p => _playingTimeService.PlayerIsOnTheFloor(p.PlayerId, p.GameId) == Task.FromResult(false)))
-                return await Task.FromResult(false);
             if (_plays == null) return await Task.FromResult(false);
+            foreach (var _play in _plays)
+            {
+                if (!await _playingTimeService.PlayerIsOnTheFloor(_play.PlayerId, _play.GameId))
+                    return await Task.FromResult(false);
+            }
             
-            else
+            
             {
                 foreach (var _play in _plays)
                 {

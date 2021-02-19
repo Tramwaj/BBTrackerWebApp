@@ -9,7 +9,7 @@ namespace BBTracker.Contracts.Services
 {
     public interface IGameService
     {
-        public Task<NewGameViewModel> NewGame(GamePlayersVM playerIDs, string userName);  
+        public Task<NewGameViewModel> NewGame(GamePlayersVM players, IEnumerable<Claim> userClaims);  
         //The following is redundant if NewGame starts the game
         public Task<bool> StartGame(); 
         public Task<bool> AddPlayerToGame(AddPlayerToGameVM player);

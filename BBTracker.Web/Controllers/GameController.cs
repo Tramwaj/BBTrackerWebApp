@@ -19,11 +19,11 @@ namespace BBTracker.Web.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
-        private readonly IPlayingTimeService _substitutionService;
+        private readonly IPlayingTimeService _PlayingTimeService;
         public GameController(IGameService gameService, IPlayingTimeService substitutionService )
         {
             _gameService = gameService;
-            _substitutionService = substitutionService;
+            _PlayingTimeService = substitutionService;
         }
 
         [HttpGet]
@@ -43,8 +43,8 @@ namespace BBTracker.Web.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             //todo: User.Claims wysyłane a nie takie brzydactwo tutaj
-            string userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            return Created(string.Empty, await _gameService.NewGame(playerIDs,userName));
+            
+            return Created(string.Empty, await _gameService.NewGame(playerIDs,User.Claims));
         }
         
         [HttpPost("addplayertg")]
@@ -82,7 +82,7 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> AddSubstitution([FromBody] AddSubstitutionViewModel subVM)
         {
-            if (await _substitutionService.AddSubstitution(subVM))
+            if (await _PlayingTimeService.AddSubstitution(subVM))
                 return Ok();
             return BadRequest();
         }
