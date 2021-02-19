@@ -22,5 +22,12 @@ namespace BBTracker.Model.Models
             Game = game;
             TeamB = teamB;
         }
+        public PlayerGame(Guid playerId, Guid gameId, bool teamB)
+        {
+            PlayerId = playerId;
+            GameId = gameId;
+            TeamB = teamB;
+        }
+        
     }
 }
