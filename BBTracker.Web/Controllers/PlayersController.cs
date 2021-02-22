@@ -39,6 +39,7 @@ namespace BasketStatsWebApp.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> AddPlayer([FromBody] FullPlayerDTO player)
         {
             if (!ModelState.IsValid)
@@ -52,6 +53,8 @@ namespace BasketStatsWebApp.Controllers
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> RemovePlayer(Guid id)
         {
             if (await _playerService.RemovePlayer(id))
@@ -63,6 +66,7 @@ namespace BasketStatsWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> Editplayer(Guid id, [FromBody] FullPlayerDTO player)
         {
             if (!ModelState.IsValid)
