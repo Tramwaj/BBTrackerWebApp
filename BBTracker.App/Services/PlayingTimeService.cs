@@ -12,10 +12,10 @@ namespace BBTracker.App.Services
 {
     public class PlayingTimeService : IPlayingTimeService
     {
-        private readonly SubstitutionRepo _subRepo;
-        public PlayingTimeService(SubstitutionRepo subRepo)
+        private readonly PlayRepo _playRepo;
+        public PlayingTimeService(PlayRepo subRepo)
         {
-            _subRepo = subRepo;
+            _playRepo = subRepo;
         }
 
         public async Task<bool> AddSubstitution(AddSubstitutionViewModel subVM)
@@ -23,7 +23,7 @@ namespace BBTracker.App.Services
             //todo:timespan from game start in controller?
             if (await SubstitutionIsPossible(subVM))
             {
-                await _subRepo.AddSubstitution(new Substitution(Guid.NewGuid(), DateTime.Now, new TimeSpan(0), subVM.PlayerId, subVM.GameId, subVM.SubIn));
+                await _playRepo.AddSubstitution(new Substitution(Guid.NewGuid(), DateTime.Now, new TimeSpan(0), subVM.PlayerId, subVM.GameId, subVM.SubIn));
                 return true;
             }
 
@@ -43,7 +43,7 @@ namespace BBTracker.App.Services
         }
         public async Task<bool> PlayerIsOnTheFloor(Guid playerId, Guid gameId)
         {
-            var _playerSubs = (await _subRepo.GetPlayerGameSubstitutions(playerId,gameId));
+            var _playerSubs = (await _playRepo.GetPlayerGameSubstitutions(playerId,gameId));
             if (!_playerSubs.Any()) 
                 return false;
             if (!_playerSubs.LastOrDefault().SubbedIn)
