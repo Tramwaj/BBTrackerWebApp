@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,13 +65,22 @@ namespace BasketStatsWebApp
             services.AddSingleton<IUserService,UserService>();
             services.AddSingleton<IPlayParser, PlayParser>();
             services.AddSingleton<IPlayingTimeService, PlayingTimeService>();
+            services.AddSingleton<IGameListService, GameListService>();
 
             services.AddSingleton<GameRepo>();
             services.AddSingleton<PlayerRepo>();
             services.AddSingleton<PlayRepo>();
             services.AddSingleton<UserRepo>();
 
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c => {
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.OAuth2
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -81,12 +91,26 @@ namespace BasketStatsWebApp
                 app.UseDeveloperExceptionPage();
             }
 
+
+
+
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "BBTracker v0.1");
+                
             });
+
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v0", new OpenApiInfo { Title = "BasketBall Tracker", Version = "v0" });
+                
+            //});
+
+
+
 
             app.UseHttpsRedirection();
 
