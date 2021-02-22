@@ -25,6 +25,12 @@ namespace BBTracker.Model.Models
             FieldGoalRebounded = fieldGoalRebounded;
             FieldGoalReboundedId = fieldGoalRebounded.Id;
         }
-    }
 
+        public override void UpdateStats(Stats stats)
+        {
+            if (IsOffensive) ++stats.OffensiveRebounds;
+            else ++stats.DefensiveRebounds;
+        }
+
+    }
 }

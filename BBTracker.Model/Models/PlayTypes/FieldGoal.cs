@@ -21,6 +21,14 @@ namespace BBTracker.Model.Models
             WasBlocked = wasBlocked;
             WasAssisted = wasAssisted;
         }
+
+        public override void UpdateStats(Stats stats)
+        {
+            if (Points == 2 && Made) ++stats.FieldGoalsMade2p;
+            if (Points == 2 && !Made) ++stats.FieldGoalsMissed2p;
+            if (Points == 3 && Made) ++stats.FieldGoalsMade3p;
+            if (Points == 3 && !Made) ++stats.FieldGoalsMissed3p;
+        }
     }
 
 

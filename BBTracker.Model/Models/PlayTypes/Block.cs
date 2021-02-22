@@ -22,6 +22,11 @@ namespace BBTracker.Model.Models
             FieldGoalBlocked = fieldGoalBlocked;
             FieldGoalBlockedId = fieldGoalBlocked.Id;
         }
+
+        public override void UpdateStats(Stats stats)
+        {
+            ++stats.Blocks;
+        }
     }
 
 }

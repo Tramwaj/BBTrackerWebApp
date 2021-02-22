@@ -17,13 +17,14 @@ namespace BBTracker.App
 {
     public class GameService : IGameService
     {
-        //todo: !!! Services z repo
+        //todo: repo do DI
+        
         private readonly GameRepo _gameRepo;
         private readonly PlayerRepo _playerRepo;
         private readonly IUserService _userRepo;
         private readonly IPlayParser _playReader;
         private readonly IPlayingTimeService _playingTimeService;
-        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, IUserService userRepo, IPlayingTimeService playerService) //to do DI jeszcze wrzucić
+        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, IUserService userRepo, IPlayingTimeService playerService) 
         {
             _gameRepo = gameRepo;
             _playerRepo =  playerRepo;
@@ -31,24 +32,27 @@ namespace BBTracker.App
             _playReader = playReader;
             _playingTimeService = playerService;
         }
+        
         public async Task<NewGameViewModel> NewGame(GamePlayersVM players, IEnumerable<Claim> userClaims)
         {
             string userName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var _user = await _userRepo.GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
+            var _players = new List<Guid>();
             await _gameRepo.NewGameAsync(_game);
             foreach (var player in players.Players)
             {
-                await AddPlayerToGame(new AddPlayerToGameVM(_game.Id, player.Id, player.TeamB));
+                await AddPlayerToGame(new PlayerToGameVM(_game.Id, player.Id, player.TeamB));
+                _players.Add(player.Id);
                 if (player.OnCourt)
                     await _playingTimeService.AddSubstitution(new AddSubstitutionViewModel(_game.Id,player.Id,true));
             }
 
-            return new NewGameViewModel(_game.Id, _game.Start);
+            return new NewGameViewModel(_game.Id, _game.Start, _players);
         }
 
         //todo: from here should come the signal to refresh Player's Stats next time it's needed
-        public async Task<bool> AddPlayerToGame(AddPlayerToGameVM addPlayerToGameDTO)//(Guid playerId, Guid gameId, bool teamB)
+        public async Task<bool> AddPlayerToGame(PlayerToGameVM addPlayerToGameDTO)//(Guid playerId, Guid gameId, bool teamB)
         {
             var _player = await _playerRepo.GetPlayerAsync(addPlayerToGameDTO.PlayerId);
             var _game = await _gameRepo.GetGameByIdAsync(addPlayerToGameDTO.GameId);
@@ -62,20 +66,56 @@ namespace BBTracker.App
             }
         }
 
-        public async Task<bool> EndGame(Guid gameId)
+        public async Task<GameViewModel> EndGame(Guid gameId)
         {
             //TODO: podliczenie wyniku
             var game = await _gameRepo.GetGameByIdAsync(gameId);
             if (game == null)
-                return false;
+                return null;
             if (game.End != null)
-                return false;
-            var end = DateTime.Now;
+                return null;
+            var end = DateTime.Now;            
             await _gameRepo.UpdateEndTime(gameId, end);
-            return true;
+            return await CreateGameViewModel(game);
+        }
+       
+        private async Task<GameViewModel>CreateGameViewModel(Game game)
+        {
+            var plays = await _gameRepo.GetPlaysByGameId(game.Id);
+
+            var teamAStats = plays
+                .Where(p => !p.IsTeamB)
+                .Select(p => p.PlayerId)
+                .Distinct()
+                .Select(p => new Stats(p))
+                .ToList();
+                
+            var teamBStats = plays
+                .Where(p => p.IsTeamB)
+                .Select(p => p.PlayerId)
+                .Distinct()
+                .Select(p => new Stats(p))
+                .ToList();
+            foreach (Play play in game.Plays.Where(p => !p.IsTeamB))
+            {
+                teamAStats.First(s => s.Id == play.PlayerId).ResolvePlay(play);
+            }
+            foreach (Play play in game.Plays.Where(p => p.IsTeamB))
+            {
+                teamBStats.First(s => s.Id == play.PlayerId).ResolvePlay(play);
+            }
+            //return new Game
+            return new GameViewModel(
+                game.Id,
+                game.Start,
+                (DateTime)game.End,
+                null,null,
+                teamAStats.Select(ts=>Mapper.DTOFromStats(ts)).ToList(),
+                teamBStats.Select(ts=>Mapper.DTOFromStats(ts)).ToList()
+                );
         }
 
-        public async Task<bool> AddPlayersToGame(ICollection<AddPlayerToGameVM> players)
+        public async Task<bool> AddPlayersToGame(ICollection<PlayerToGameVM> players)
         {
             foreach (var playerDTO in players)
             {
@@ -84,6 +124,7 @@ namespace BBTracker.App
             }
             return true;
         }
+        
         public async Task<SetupGameViewModel> GetGameViewModel(ClaimsPrincipal user)
         {
             string userName = user.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;

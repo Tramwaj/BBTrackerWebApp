@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BBTracker.Model.Interfaces;
+using System;
+using System.Security.Policy;
 
 namespace BBTracker.Model.Models
 {    
@@ -26,5 +28,9 @@ namespace BBTracker.Model.Models
             PlayerId = playerId;
             GameId = gameId;
         }
+        public abstract void UpdateStats(Stats stats);
+        
+
+        
     }
 }

@@ -18,5 +18,9 @@ namespace BBTracker.Model.Models
         {
             FouledPlayer = fouledPlayer;
         }
+
+        public override void UpdateStats(Stats stats)
+        {
+        }
     }
 }
