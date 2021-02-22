@@ -29,6 +29,8 @@ namespace BBTracker.Web.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        /// Index
         public async Task<ActionResult<SetupGameViewModel>> Index()
         {            
             string userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -38,6 +40,8 @@ namespace BBTracker.Web.Controllers
         [HttpPost("startgame")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        ///Start New Game with Starting Players provided
         public async Task<ActionResult<NewGameViewModel>> StartGame([FromBody] GamePlayersVM playerIDs)        
         {
             if (!ModelState.IsValid)
@@ -51,7 +55,7 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult> AddPlayerToGame([FromBody] AddPlayerToGameVM playerDTO)
+        public async Task<ActionResult> AddPlayerToGame([FromBody] PlayerToGameVM playerDTO)
         {
             if (await _gameService.AddPlayerToGame(playerDTO))
                 return Ok();
@@ -62,7 +66,7 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult> AddPlayersToGame([FromBody] ICollection<AddPlayerToGameVM> playersDTOs)
+        public async Task<ActionResult> AddPlayersToGame([FromBody] ICollection<PlayerToGameVM> playersDTOs)
         {
             if (await _gameService.AddPlayersToGame(playersDTOs))
                 return Ok();
@@ -71,6 +75,7 @@ namespace BBTracker.Web.Controllers
         [HttpPost("addplays")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> AddPlays([FromBody] AddPlaysToGameViewModel playsVM)
         {
             if (await _gameService.AddPlays(playsVM))
@@ -80,6 +85,7 @@ namespace BBTracker.Web.Controllers
         [HttpPost("substitution")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> AddSubstitution([FromBody] AddSubstitutionViewModel subVM)
         {
             if (await _PlayingTimeService.AddSubstitution(subVM))
@@ -93,15 +99,16 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult>  EndGame(Guid endGameId)
+        public async Task<ActionResult<GameViewModel>>  EndGame(Guid endGameId)
         {
-            if (await _gameService.EndGame(endGameId))
+            var _gameEnded = await _gameService.EndGame(endGameId);
+            if (_gameEnded == null)
             {
-                return Ok();
+                return BadRequest();
             }
             else
             {
-                return BadRequest();
+                return Ok(_gameEnded);
             }
         }
     
