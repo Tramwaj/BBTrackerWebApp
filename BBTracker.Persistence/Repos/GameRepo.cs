@@ -14,11 +14,12 @@ namespace BBTracker.Persistence.Repos
         private readonly BBTrackerContext _context;
         public GameRepo() => _context = new BBTrackerContext();
 
-        public async Task StartGameAsync(Game game)
+        public async Task NewGameAsync(Game game)
         {
             await _context.Games.AddAsync(game);
             await _context.SaveChangesAsync();
-        }        
+        }
+        public async Task<ICollection<Game>> GetAllGamesAsync(Guid userId) => await _context.Games.Where(g => g.OwnerId == userId).AsQueryable().ToListAsync();
 
         public async Task<Game> GetGameByIdAsync(Guid id) => await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
 
@@ -28,18 +29,21 @@ namespace BBTracker.Persistence.Repos
             await _context.SaveChangesAsync();
         }
 
+        public async Task<ICollection<PlayerGame>> GetPlayerGamesByGameId(Guid id) => await _context.PlayerGames.Where(pg => pg.GameId == id).ToListAsync();
+
         public async Task UpdateEndTime(Guid gameId, DateTime end)
         {
             var game = await GetGameByIdAsync(gameId);
             game.End = end;
             await _context.SaveChangesAsync();
         }
-        //todo: to own repo?
+        //todo: to own repo - with substitutions as a Play
         public async Task AddPlay(Play play)
-        {   
+        {
             await _context.Plays.AddAsync(play);
-            
+
             await _context.SaveChangesAsync();
-        }        
+        }
+        public async Task<ICollection<Play>> GetPlaysByGameId(Guid id) => await _context.Plays.Where(p => p.GameId == id).ToListAsync();
     }
 }
