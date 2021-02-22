@@ -12,20 +12,8 @@ namespace BBTracker.Persistence.Configurations
     class SubstitutionConfiguration : IEntityTypeConfiguration<Substitution>
     {
         public void Configure(EntityTypeBuilder<Substitution> builder)
-        {
-            builder.HasKey(s => s.Id);
-
-            builder.HasOne(s => s.Game)
-                .WithMany(g => g.Substitutions)
-                .HasForeignKey(s => s.GameId);
-
-            builder.HasOne(s => s.Player)
-                .WithMany(p => p.Substitutions)
-                .HasForeignKey(s => s.PlayerId);
-
-            builder.Property(s => s.Time).IsRequired();
+        {            
             builder.Property(s => s.SubbedIn).IsRequired();
-
         }
     }
 }

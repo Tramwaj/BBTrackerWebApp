@@ -30,7 +30,6 @@ namespace BBTracker.Persistence
         public DbSet<Player> Players { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<PlayerGame> PlayerGames { get; set; }
-        public DbSet<Substitution> Substitutions { get; set; }
         public DbSet<Play> Plays { get; set; }
 
         public DbSet<Assist> Assists { get; set; }
@@ -39,6 +38,7 @@ namespace BBTracker.Persistence
         public DbSet<Foul> Fouls { get; set; }
         public DbSet<Rebound> Rebounds { get; set; }
         public DbSet<Steal> Steals { get; set; }
+        public DbSet<Substitution> Substitutions { get; set; }
         public DbSet<Turnover> Turnovers { get; set; }
 
     }

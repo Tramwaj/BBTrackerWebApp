@@ -82,17 +82,7 @@ namespace BBTracker.Web.Controllers
                 return Ok();
             return BadRequest();
         }
-        [HttpPost("substitution")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult> AddSubstitution([FromBody] AddSubstitutionViewModel subVM)
-        {
-            if (await _PlayingTimeService.AddSubstitution(subVM))
-                return Ok();
-            return BadRequest();
-        }
-
+        
         [HttpPost("")]
         //[HttpPost("endgame")]
         [HttpPost("{endGameId:guid}")]

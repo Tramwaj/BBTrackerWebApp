@@ -11,7 +11,8 @@ namespace BBTracker.Common
         fieldgoal,
         rebound,
         steal,
+        substitution,
         turnover,
-        foul,
+        foul        
     }
 }

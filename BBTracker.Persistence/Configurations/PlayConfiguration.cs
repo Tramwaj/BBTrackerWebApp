@@ -22,6 +22,7 @@ namespace BBTracker.Persistence.Configurations
                 .HasValue<FieldGoal>(PlayTypeEnum.fieldgoal)
                 .HasValue<Rebound>(PlayTypeEnum.rebound)
                 .HasValue<Steal>(PlayTypeEnum.steal)
+                .HasValue<Substitution>(PlayTypeEnum.substitution)
                 .HasValue<Turnover>(PlayTypeEnum.turnover)
                 .HasValue<Foul>(PlayTypeEnum.foul);
             builder.Property(p => p.Time)

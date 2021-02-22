@@ -8,12 +8,12 @@ namespace BBTracker.Model.Models
     {
         public Guid Id { get; }
         public DateTime Time { get; }
+        public Guid GameId { get; }
         public Game Game { get; set; }
+        public Guid PlayerId { get; }
+        public Player Player { get; set; }
         public TimeSpan GameTime { get; }
         public bool IsTeamB { get; }
-        public Guid PlayerId { get; }
-        public Guid GameId { get; }
-        public Player Player { get; set; }
 
         public Play()
         {

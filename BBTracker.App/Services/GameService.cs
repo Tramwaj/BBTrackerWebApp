@@ -24,6 +24,7 @@ namespace BBTracker.App
         private readonly IUserService _userRepo;
         private readonly IPlayParser _playReader;
         private readonly IPlayingTimeService _playingTimeService;
+
         public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, IUserService userRepo, IPlayingTimeService playerService) 
         {
             _gameRepo = gameRepo;
@@ -35,20 +36,29 @@ namespace BBTracker.App
         
         public async Task<NewGameViewModel> NewGame(GamePlayersVM players, IEnumerable<Claim> userClaims)
         {
+            //todo: check if any players are in game??
             string userName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var _user = await _userRepo.GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
-            var _players = new List<Guid>();
+            //var _players = new List<Guid>();
             await _gameRepo.NewGameAsync(_game);
+            List<Guid> _teamA = players.Players.Where(p => !p.TeamB)
+                                                    .Select(p => p.Id)
+                                                    .ToList();
+            List<Guid> _teamB = players.Players.Where(p => p.TeamB)
+                                                    .Select(p => p.Id)
+                                                    .ToList();
+
+
             foreach (var player in players.Players)
             {
                 await AddPlayerToGame(new PlayerToGameVM(_game.Id, player.Id, player.TeamB));
-                _players.Add(player.Id);
+                //_players.Add(player.Id);
                 if (player.OnCourt)
-                    await _playingTimeService.AddSubstitution(new AddSubstitutionViewModel(_game.Id,player.Id,true));
+                    await _gameRepo.AddPlay(new Substitution(Guid.NewGuid(),DateTime.Now,player.TeamB, player.Id, _game.Id,true));
             }
 
-            return new NewGameViewModel(_game.Id, _game.Start, _players);
+            return new NewGameViewModel(_game.Id, _game.Start, _teamA, _teamB);
         }
 
         //todo: from here should come the signal to refresh Player's Stats next time it's needed

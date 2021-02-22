@@ -16,23 +16,7 @@ namespace BBTracker.App.Services
         public PlayingTimeService(PlayRepo subRepo)
         {
             _playRepo = subRepo;
-        }
-
-        public async Task<bool> AddSubstitution(AddSubstitutionViewModel subVM)
-        {
-            //todo:timespan from game start in controller?
-            if (await SubstitutionIsPossible(subVM))
-            {
-                await _playRepo.AddSubstitution(new Substitution(Guid.NewGuid(), DateTime.Now, new TimeSpan(0), subVM.PlayerId, subVM.GameId, subVM.SubIn));
-                return true;
-            }
-
-            else
-            {
-                return false;
-            }
-
-        }
+        }        
         private async Task<bool> SubstitutionIsPossible(AddSubstitutionViewModel subvm)
         {
 
