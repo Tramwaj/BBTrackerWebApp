@@ -12,7 +12,7 @@ namespace BBTracker.Persistence.Configurations
     class SubstitutionConfiguration : IEntityTypeConfiguration<Substitution>
     {
         public void Configure(EntityTypeBuilder<Substitution> builder)
-        {            
+        {
             builder.Property(s => s.SubbedIn).IsRequired();
         }
     }

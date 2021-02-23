@@ -15,8 +15,7 @@ namespace BBTracker.Model.Models
         public int ScoreB { get; set; }
 
         public ICollection<Play> Plays { get; set; }
-        public ICollection<PlayerGame> PlayerGames { get; set; }
-        public ICollection<Substitution> Substitutions { get; set; }
+        public ICollection<PlayerGame> PlayerGames { get; set; }        
 
         public User Owner { get; set; }
         public Guid OwnerId { get; set; }

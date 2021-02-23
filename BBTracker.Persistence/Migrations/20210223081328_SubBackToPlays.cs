@@ -10,7 +10,6 @@ namespace BBTracker.Persistence.Migrations
             migrationBuilder.DropTable(
                 name: "Substitutions");
 
-            
             migrationBuilder.AddColumn<bool>(
                 name: "SubbedIn",
                 table: "Plays",
@@ -20,30 +19,6 @@ namespace BBTracker.Persistence.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Plays_Games_GameId1",
-                table: "Plays");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Plays_Players_PlayerId1",
-                table: "Plays");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Plays_GameId1",
-                table: "Plays");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Plays_PlayerId1",
-                table: "Plays");
-
-            migrationBuilder.DropColumn(
-                name: "GameId1",
-                table: "Plays");
-
-            migrationBuilder.DropColumn(
-                name: "PlayerId1",
-                table: "Plays");
-
             migrationBuilder.DropColumn(
                 name: "SubbedIn",
                 table: "Plays");

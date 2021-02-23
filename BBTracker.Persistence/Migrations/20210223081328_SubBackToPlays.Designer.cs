@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BBTracker.Persistence.Migrations
 {
     [DbContext(typeof(BBTrackerContext))]
-    [Migration("20210222202049_SubBackToPlays")]
+    [Migration("20210223081328_SubBackToPlays")]
     partial class SubBackToPlays
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -228,18 +228,8 @@ namespace BBTracker.Persistence.Migrations
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
 
-                    b.Property<Guid?>("GameId1")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PlayerId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<bool>("SubbedIn")
                         .HasColumnType("bit");
-
-                    b.HasIndex("GameId1");
-
-                    b.HasIndex("PlayerId1");
 
                     b.HasDiscriminator().HasValue(5);
                 });
@@ -333,24 +323,11 @@ namespace BBTracker.Persistence.Migrations
                     b.Navigation("FieldGoalRebounded");
                 });
 
-            modelBuilder.Entity("BBTracker.Model.Models.Substitution", b =>
-                {
-                    b.HasOne("BBTracker.Model.Models.Game", null)
-                        .WithMany("Substitutions")
-                        .HasForeignKey("GameId1");
-
-                    b.HasOne("BBTracker.Model.Models.Player", null)
-                        .WithMany("Substitutions")
-                        .HasForeignKey("PlayerId1");
-                });
-
             modelBuilder.Entity("BBTracker.Model.Models.Game", b =>
                 {
                     b.Navigation("PlayerGames");
 
                     b.Navigation("Plays");
-
-                    b.Navigation("Substitutions");
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Player", b =>
@@ -358,8 +335,6 @@ namespace BBTracker.Persistence.Migrations
                     b.Navigation("PlayerGames");
 
                     b.Navigation("Plays");
-
-                    b.Navigation("Substitutions");
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.User", b =>
