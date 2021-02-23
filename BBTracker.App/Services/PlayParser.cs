@@ -25,6 +25,8 @@ namespace BBTracker.App.Services
                     case PlayTypeEnum.steal:
                     case PlayTypeEnum.turnover:
                         return ParseTurnoverBundle(playsBundle);
+                    case PlayTypeEnum.substitution:
+                        return ParseSubstitutionBundle(playsBundle);
                     case PlayTypeEnum.foul:
                         throw new NotImplementedException();
                     default:
@@ -34,6 +36,10 @@ namespace BBTracker.App.Services
             return null;
         }
 
+        private ICollection<Play> ParseSubstitutionBundle(ICollection<PlayDTO> playsBundle)
+        {
+            return playsBundle.Select(s => (Play)new Substitution(Guid.NewGuid(), DateTime.Now, s.IsTeamB, s.PlayerId, _gameId, s.MainBoolProperty)).ToList();
+        }
 
         private ICollection<Play> ParseFieldGoalBundle(ICollection<PlayDTO> playsBundle)
         {
