@@ -40,7 +40,6 @@ namespace BBTracker.App
             string userName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             var _user = await _userRepo.GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
-            //var _players = new List<Guid>();
             await _gameRepo.NewGameAsync(_game);
             List<Guid> _teamA = players.Players.Where(p => !p.TeamB)
                                                     .Select(p => p.Id)
@@ -53,9 +52,8 @@ namespace BBTracker.App
             foreach (var player in players.Players)
             {
                 await AddPlayerToGame(new PlayerToGameVM(_game.Id, player.Id, player.TeamB));
-                //_players.Add(player.Id);
                 if (player.OnCourt)
-                    await _gameRepo.AddPlay(new Substitution(Guid.NewGuid(),DateTime.Now,player.TeamB, player.Id, _game.Id,true));
+                    await _gameRepo.AddPlay(new Substitution(Guid.NewGuid(), DateTime.Now, player.TeamB, player.Id, _game.Id, true));
             }
 
             return new NewGameViewModel(_game.Id, _game.Start, _teamA, _teamB);
