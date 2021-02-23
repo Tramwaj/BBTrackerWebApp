@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace BBTracker.Contracts.ViewModels
 {
-    public class AddPlayerToGameVM
+    public class PlayerToGameVM
     {
         public Guid GameId { get; set; }
         public Guid PlayerId { get; set; }
         public bool TeamB { get; set; }
-        public AddPlayerToGameVM()
+        public PlayerToGameVM()
         {
 
         }
 
-        public AddPlayerToGameVM(Guid gameId, Guid playerId, bool teamB)
+        public PlayerToGameVM(Guid gameId, Guid playerId, bool teamB)
         {
             GameId = gameId;
             PlayerId = playerId;
