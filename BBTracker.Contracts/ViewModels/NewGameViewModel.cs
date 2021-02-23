@@ -10,13 +10,15 @@ namespace BBTracker.Contracts.ViewModels
     {
         public Guid Id { get; set; }
         public DateTime Start { get; set; }
-        public ICollection<Guid> Players { get; set; }
+        public ICollection<Guid> PlayersTeamA { get; set; }
+        public ICollection<Guid> PlayersTeamB { get; set; }
 
-        public NewGameViewModel(Guid id, DateTime start, ICollection<Guid> players=null)
+        public NewGameViewModel(Guid id, DateTime start, ICollection<Guid> teamA=null, ICollection<Guid> teamB = null)
         {
             Id = id;
             Start = start;
-            Players = players;
+            PlayersTeamA = teamA;
+            PlayersTeamB = teamB;
         }
     }
 }
