@@ -13,5 +13,6 @@ namespace BBTracker.Contracts.Services
         public Task<bool> CreateUser(CreateUserViewModel createUserVM);
         public Task<bool> Login(LoginViewModel loginVM);
         public Task<User> GetUser(string userName);
+        public Task<bool> DeleteUser(Guid id);
     }
 }
