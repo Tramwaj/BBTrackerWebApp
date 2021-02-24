@@ -12,8 +12,9 @@ using BBTracker.Contracts.ViewModels;
 using System.Security.Claims;
 using BBTracker.App.Mappers;
 using BBTracker.App.Services;
+using BBTracker.App.Interfaces;
 
-namespace BBTracker.App
+namespace BBTracker.App.Services
 {
     public class GameService : IGameService
     {
@@ -23,15 +24,15 @@ namespace BBTracker.App
         private readonly PlayerRepo _playerRepo;
         private readonly IUserService _userRepo;
         private readonly IPlayParser _playReader;
-        private readonly IPlayingTimeService _playingTimeService;
+        private readonly IPlayService _playsService;
 
-        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, IUserService userRepo, IPlayingTimeService playerService) 
+        public GameService(IPlayParser playReader, GameRepo gameRepo, PlayerRepo playerRepo, IUserService userRepo, IPlayService playerService) 
         {
             _gameRepo = gameRepo;
             _playerRepo =  playerRepo;
             _userRepo =  userRepo;
             _playReader = playReader;
-            _playingTimeService = playerService;
+            _playsService = playerService;
         }
         
         public async Task<NewGameViewModel> NewGame(GamePlayersVM players, IEnumerable<Claim> userClaims)
@@ -77,6 +78,7 @@ namespace BBTracker.App
         public async Task<GameViewModel> EndGame(Guid gameId)
         {
             //TODO: podliczenie wyniku
+            //TODO: sub out players from the game
             var game = await _gameRepo.GetGameByIdAsync(gameId);
             if (game == null)
                 return null;
@@ -157,7 +159,7 @@ namespace BBTracker.App
             if (_plays == null) return await Task.FromResult(false);
             foreach (var _play in _plays)
             {
-                if (!await _playingTimeService.PlayerIsOnTheFloor(_play.PlayerId, _play.GameId))
+                if (!await _playsService.PlayIsPossible(_play))
                     return await Task.FromResult(false);
             }
             
