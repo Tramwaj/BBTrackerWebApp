@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BBTracker.Contracts.ViewModels
 {
-    public class GameViewModel
+    public class GameStatsViewModel
     {
         public Guid Id { get; set; }
         public DateTime Start { get; set; }
@@ -17,7 +17,7 @@ namespace BBTracker.Contracts.ViewModels
         public ICollection<StatsDTO> TeamA{ get; set; }
         public ICollection<StatsDTO> TeamB{ get; set; }
 
-        public GameViewModel(Guid id, DateTime start, DateTime end, StatsDTO teamAStats, StatsDTO teamBStats, ICollection<StatsDTO> teamA, ICollection<StatsDTO> teamB)
+        public GameStatsViewModel(Guid id, DateTime start, DateTime end, StatsDTO teamAStats, StatsDTO teamBStats, ICollection<StatsDTO> teamA, ICollection<StatsDTO> teamB)
         {
             Id = id;
             Start = start;

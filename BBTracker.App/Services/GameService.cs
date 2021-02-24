@@ -75,7 +75,7 @@ namespace BBTracker.App.Services
             }
         }
 
-        public async Task<GameViewModel> EndGame(Guid gameId)
+        public async Task<GameStatsViewModel> EndGame(Guid gameId)
         {
             //TODO: podliczenie wyniku
             //TODO: sub out players from the game
@@ -89,7 +89,7 @@ namespace BBTracker.App.Services
             return await CreateGameViewModel(game);
         }
        
-        private async Task<GameViewModel>CreateGameViewModel(Game game)
+        private async Task<GameStatsViewModel>CreateGameViewModel(Game game)
         {
             var plays = await _gameRepo.GetPlaysByGameId(game.Id);
 
@@ -115,7 +115,7 @@ namespace BBTracker.App.Services
                 teamBStats.First(s => s.Id == play.PlayerId).ResolvePlay(play);
             }
             //return new Game
-            return new GameViewModel(
+            return new GameStatsViewModel(
                 game.Id,
                 game.Start,
                 (DateTime)game.End,

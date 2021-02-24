@@ -88,7 +88,7 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<GameViewModel>>  EndGame(Guid endGameId)
+        public async Task<ActionResult<GameStatsViewModel>>  EndGame(Guid endGameId)
         {
             var _gameEnded = await _gameService.EndGame(endGameId);
             if (_gameEnded == null)
