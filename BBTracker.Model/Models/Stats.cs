@@ -31,12 +31,12 @@ namespace BBTracker.Model.Models
         //todo: change tuple to sth described?
         public Stats()
         {
-            Substitutions = new List<Tuple<TimeSpan,bool>>();
         }
 
         public Stats(Guid id)
         {
             Id = id;
+            Substitutions = new List<Tuple<TimeSpan,bool>>();
         }
 
 
