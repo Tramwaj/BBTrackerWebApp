@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BBTracker.Model.Models;
 
-namespace BBTracker.App
+namespace BBTracker.App.Services
 {
     public class PlayerService : IPlayerService
     {
