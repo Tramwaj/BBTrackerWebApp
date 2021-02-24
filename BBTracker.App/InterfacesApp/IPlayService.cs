@@ -9,6 +9,7 @@ namespace BBTracker.App.Interfaces
 {
     public interface IPlayService
     {
-        public Task<bool> PlayIsPossible(Play play);
+        public Task<bool> AddPlays(ICollection<Play> play);
+        public Task AddPlay(Play play);
     }
 }
