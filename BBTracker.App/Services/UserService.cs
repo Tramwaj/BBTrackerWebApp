@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using BBTracker.Contracts.Services;
 using BBTracker.Persistence.Repos;
 
-namespace BBTracker.App
+namespace BBTracker.App.Services
 {
     public class UserService : IUserService
     {
@@ -48,6 +48,15 @@ namespace BBTracker.App
                 return true;
         }
 
-        public async Task<User> GetUser(string userName) => await _userRepo.GetUserByNameAsync(userName);            
+        public async Task<User> GetUser(string userName) => await _userRepo.GetUserByNameAsync(userName);
+
+        public async Task<bool> DeleteUser(Guid id)
+        {
+            var _user = await _userRepo.GetUserByIdAsync(id);
+            if (_user == null)
+                return false;
+            await _userRepo.DeleteAsync(_user);
+            return true;
+        }
     }
 }
