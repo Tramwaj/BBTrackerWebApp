@@ -38,12 +38,7 @@ namespace BBTracker.Persistence.Repos
             await _context.SaveChangesAsync();
         }
         //todo: to own repo - with substitutions as a Play
-        public async Task AddPlay(Play play)
-        {
-            await _context.Plays.AddAsync(play);
-
-            await _context.SaveChangesAsync();
-        }
+        
         public async Task<ICollection<Play>> GetPlaysByGameId(Guid id) => await _context.Plays.Where(p => p.GameId == id).ToListAsync();
     }
 }
