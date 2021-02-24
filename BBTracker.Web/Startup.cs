@@ -1,4 +1,5 @@
 using BBTracker.App;
+using BBTracker.App.Interfaces;
 using BBTracker.App.Services;
 using BBTracker.Contracts.Services;
 using BBTracker.Contracts.ViewModels;
@@ -64,7 +65,7 @@ namespace BasketStatsWebApp
             services.AddSingleton<IGameService, GameService>();
             services.AddSingleton<IUserService,UserService>();
             services.AddSingleton<IPlayParser, PlayParser>();
-            services.AddSingleton<IPlayingTimeService, PlayingTimeService>();
+            services.AddSingleton<IPlayService, PlayService>();
             services.AddSingleton<IGameListService, GameListService>();
 
             services.AddSingleton<GameRepo>();
