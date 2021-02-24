@@ -19,11 +19,10 @@ namespace BBTracker.Web.Controllers
     public class GameController : ControllerBase
     {
         private readonly IGameService _gameService;
-        private readonly IPlayingTimeService _PlayingTimeService;
-        public GameController(IGameService gameService, IPlayingTimeService substitutionService )
+        
+        public GameController(IGameService gameService)
         {
             _gameService = gameService;
-            _PlayingTimeService = substitutionService;
         }
 
         [HttpGet]
