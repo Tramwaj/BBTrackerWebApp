@@ -1,5 +1,4 @@
-﻿using BBTracker.Model.Interfaces;
-using System;
+﻿using System;
 using System.Security.Policy;
 
 namespace BBTracker.Model.Models
