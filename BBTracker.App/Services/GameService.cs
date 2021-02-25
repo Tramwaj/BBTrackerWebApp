@@ -39,7 +39,7 @@ namespace BBTracker.App.Services
         {
             //todo: check if any players are in game??
             string userName = userClaims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            var _user = await _userRepo.GetUser(userName);
+            User _user = await GetUser(userName);
             var _game = new Game(Guid.NewGuid(), _user.Id, DateTime.Now);
             await _gameRepo.NewGameAsync(_game);
             List<Guid> _teamA = players.Players.Where(p => !p.TeamB)
@@ -53,23 +53,32 @@ namespace BBTracker.App.Services
             foreach (var player in players.Players)
             {
                 await AddPlayerToGame(new PlayerToGameVM(_game.Id, player.Id, player.TeamB));
+
                 if (player.OnCourt)
-                    await _playsService.AddPlay(new Substitution(Guid.NewGuid(), DateTime.Now, player.TeamB, player.Id, _game.Id, true));
+                {
+                    var _sub = new Substitution(Guid.NewGuid(), DateTime.Now, player.TeamB, player.Id, _game.Id, true);
+                    await _playsService.AddPlay(_sub);
+                }
             }
 
             return new NewGameViewModel(_game.Id, _game.Start, _teamA, _teamB);
         }
 
-        //todo: from here should come the signal to refresh Player's Stats next time it's needed
-        public async Task<bool> AddPlayerToGame(PlayerToGameVM addPlayerToGameDTO)//(Guid playerId, Guid gameId, bool teamB)
+        private async Task<User> GetUser(string userName)
         {
-            var _player = await _playerRepo.GetPlayerAsync(addPlayerToGameDTO.PlayerId);
-            var _game = await _gameRepo.GetGameByIdAsync(addPlayerToGameDTO.GameId);
+            return await _userRepo.GetUser(userName);
+        }
+
+        //todo: from here should come the signal to refresh Player's Stats next time it's needed
+        public async Task<bool> AddPlayerToGame(PlayerToGameVM PlayerGameDTO)//(Guid playerId, Guid gameId, bool teamB)
+        {
+            var _player = await GetPlayer(PlayerGameDTO.PlayerId);
+            var _game = await GetGame(PlayerGameDTO.GameId);
             if (_player == null || _game == null) return false;
             else
             {
                 await _gameRepo.AddPlayerGame(
-                    new PlayerGame(_player.Id, _game.Id, addPlayerToGameDTO.TeamB)
+                    new PlayerGame(_player.Id, _game.Id, PlayerGameDTO.TeamB)
                     );
                 return true;
             }
@@ -79,7 +88,7 @@ namespace BBTracker.App.Services
         {
             //TODO: podliczenie wyniku
             //TODO: sub out players from the game
-            var game = await _gameRepo.GetGameByIdAsync(gameId);
+            var game = await GetGame(gameId);
             if (game == null)
                 return null;
             if (game.End != null)
@@ -150,7 +159,7 @@ namespace BBTracker.App.Services
 
         public async Task<bool> AddPlays(AddPlaysToGameViewModel playsVM)
         {
-            var _game = await _gameRepo.GetGameByIdAsync(playsVM.GameId);
+            var _game = await GetGame(playsVM.GameId);
             if (_game.End != null) return false;
             //todo: make async
             var _plays = _playReader.ReadPlaysBundle(playsVM.playDTOs, playsVM.GameId);
@@ -161,6 +170,14 @@ namespace BBTracker.App.Services
             return await Task.FromResult(true);
         }
 
+        private async Task<Player> GetPlayer(Guid id)
+        {
+            return await _playerRepo.GetPlayerAsync(id);
+        }
+        private async Task<Game> GetGame(Guid id)
+        {
+            return await _gameRepo.GetGameByIdAsync(id);
+        }
 
         public async Task<bool> CancelPlay(Guid playId)
         {
