@@ -34,18 +34,17 @@ namespace BBTracker.Web.Controllers
         {            
             string userName = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             //var user = jwt
-            return Ok(await _gameService.GetGameViewModel(User));
+            return Ok(await _gameService.GetAvailablePlayers(User));
         }
         [HttpPost("startgame")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         ///Start New Game with Starting Players provided
-        public async Task<ActionResult<NewGameViewModel>> StartGame([FromBody] GamePlayersVM playerIDs)        
+        public async Task<ActionResult<NewGameViewModel>> StartGame([FromBody] ICollection<GamePlayerDTO> playerIDs)        
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            //todo: User.Claims wysyłane a nie takie brzydactwo tutaj
+                return BadRequest(ModelState);            
             
             return Created(string.Empty, await _gameService.NewGame(playerIDs,User.Claims));
         }
