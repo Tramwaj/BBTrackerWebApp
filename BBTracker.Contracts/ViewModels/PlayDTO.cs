@@ -15,7 +15,6 @@ namespace BBTracker.Contracts.ViewModels
         public int Points { get; set; }
         //public Guid PlayerOtherId { get; set; }
 
-        //todo: decide if gametime comes from the backend or frontend (right now from backend)
         //public TimeSpan GameTime { get; set; }
         public PlayDTO()
         {

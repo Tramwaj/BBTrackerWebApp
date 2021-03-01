@@ -74,7 +74,13 @@ namespace BBTracker.App.Services
 
         private async Task SubInStartingPlayer(Game _game, GamePlayerDTO player)
         {
-            var _sub = new Substitution(Guid.NewGuid(), DateTime.Now, player.TeamB, player.Id, _game.Id, true);
+            var _sub = new Substitution(
+                Guid.NewGuid(),
+                DateTime.Now,
+                player.TeamB,
+                player.Id,
+                _game.Id,
+                true);
             await _playsService.AddPlay(_sub);
         }
 
