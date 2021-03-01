@@ -27,7 +27,7 @@ namespace BBTracker.Web.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         /// Index
         public async Task<ActionResult<SetupGameViewModel>> Index()
@@ -38,7 +38,7 @@ namespace BBTracker.Web.Controllers
         }
         [HttpPost("startgame")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         ///Start New Game with Starting Players provided
         public async Task<ActionResult<NewGameViewModel>> StartGame([FromBody] ICollection<GamePlayerDTO> playerIDs)        
