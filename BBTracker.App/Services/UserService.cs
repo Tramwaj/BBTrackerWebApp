@@ -40,13 +40,18 @@ namespace BBTracker.App.Services
         public async Task<bool> Login(LoginViewModel loginVM)
         {
             var user = await GetUser(loginVM.UserName);
-            if (user == null) 
+            if (user == null)
                 return false;
-            if (!BCrypt.Net.BCrypt.Verify(loginVM.Password, user.Password))
-                return false;
-            else
-                return true;
+            return VerifyPassword(loginVM.Password, user.Password);
         }
+
+        private bool VerifyPassword(string inputPassword, string dbPassword)
+        {
+            if (BCrypt.Net.BCrypt.Verify(inputPassword, dbPassword))
+                return true;
+            return false;
+        }
+
 
         public async Task<User> GetUser(string userName) => await _userRepo.GetUserByNameAsync(userName);
 

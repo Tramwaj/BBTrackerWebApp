@@ -25,6 +25,7 @@ namespace BBTracker.App.Services
             var entity = await _playersRepository.GetPlayerAsync(id);
             return new FullPlayerDTO(entity.Id, entity.Name, entity.Nick, entity.City);
         }
+
         public async Task<ICollection<FullPlayerDTO>> GetAllPlayersDTO()
         {
             var _players = await _playersRepository.GetPlayersAsync();
@@ -32,6 +33,7 @@ namespace BBTracker.App.Services
                 _players.Select(p => new FullPlayerDTO(p.Id, p.Name, p.Nick, p.City))
                 .ToList());
         }
+
         public async Task<bool> AddPlayer(FullPlayerDTO player)
         {
             var players = await _playersRepository.GetPlayersAsync();
