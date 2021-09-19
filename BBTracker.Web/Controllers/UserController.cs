@@ -69,5 +69,13 @@ namespace BBTracker.Web.Controllers
                 new { access_token = tokenHandler.WriteToken(token) }
                 );
         }
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost("delete/{id: guid}")]
+        //public async Task<ActionResult> DeleteUser(Guid id)
+        //{
+        //    if (!await _userService.DeleteUser(id))
+        //        return BadRequest();
+        //    return Ok();
+        //}
     }
 }
