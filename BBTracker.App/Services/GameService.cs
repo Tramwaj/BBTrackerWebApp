@@ -38,11 +38,9 @@ namespace BBTracker.App.Services
             User _user = await GetUserFromClaims(userClaims);
             Game _game = await CreateAndGetNewGame(_user);
             await AddPlayersToGame(players, _game);
-            List<Guid> _teamA = GetTeamGuids(players, false);
-            List<Guid> _teamB = GetTeamGuids(players, true);
-
-            return new NewGameViewModel(_game.Id, _game.Start, _teamA, _teamB);
+            return CreateNewGamemodel(players, _game);
         }
+
 
         private async Task<User> GetUserFromClaims(IEnumerable<Claim> userClaims)
         {
@@ -82,6 +80,14 @@ namespace BBTracker.App.Services
                 _game.Id,
                 true);
             await _playsService.AddPlay(_sub);
+        }
+
+        private NewGameViewModel CreateNewGamemodel(ICollection<GamePlayerDTO> players, Game _game)
+        {
+            List<Guid> _teamA = GetTeamGuids(players, false);
+            List<Guid> _teamB = GetTeamGuids(players, true);
+
+            return new NewGameViewModel(_game.Id, _game.Start, _teamA, _teamB);
         }
 
         private static List<Guid> GetTeamGuids(ICollection<GamePlayerDTO> players,bool TeamB)
