@@ -30,7 +30,9 @@ namespace BBTracker.Persistence.Repos
 
 
         public async Task<Substitution> GetLastSubByPlayerGame(Guid playerId, Guid gameId) => await
-            _context.Substitutions.Where(s => s.Player.Id == playerId && s.GameId == gameId).LastOrDefaultAsync();
+            _context.Substitutions.Where(s => s.Player.Id == playerId && s.GameId == gameId)
+                                    .OrderBy(s=>s.Time)
+                                    .LastOrDefaultAsync();
         
         public async Task AddPlay(Play play)
         {

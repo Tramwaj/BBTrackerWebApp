@@ -42,6 +42,8 @@ namespace BBTracker.App.Services
         private async Task<bool> PlayerIsOnTheFloor(Guid playerId, Guid gameId)
         {
             var _playerSubs = (await _playRepo.GetPlayerGameSubstitutions(playerId, gameId));
+
+            var sub = await _playRepo.GetLastSubByPlayerGame(playerId, gameId);
             if (!_playerSubs.Any())
                 return false;
             if (!_playerSubs.LastOrDefault().SubbedIn)
