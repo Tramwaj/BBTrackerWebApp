@@ -3,6 +3,7 @@ using BBTracker.App.Interfaces;
 using BBTracker.App.Services;
 using BBTracker.Contracts.Services;
 using BBTracker.Contracts.ViewModels;
+using BBTracker.Persistence;
 using BBTracker.Persistence.Repos;
 using BBTracker.Web.Settings;
 using FluentValidation.AspNetCore;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,6 +42,12 @@ namespace BasketStatsWebApp
             services
                 .AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FullPlayerDTO>());
+
+            services
+                .AddDbContext<BBTrackerContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection"),
+                    x=>x.MigrationsAssembly("BBTracker.Persistence")));
 
             FluentValidation.ValidatorOptions.Global.LanguageManager.Culture = new System.Globalization.CultureInfo("pl");
 
