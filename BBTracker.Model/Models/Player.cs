@@ -13,7 +13,8 @@ namespace BBTracker.Model.Models
         public bool Deleted { get; set; }
         public ICollection<PlayerGame> PlayerGames { get; set; }
         public ICollection<Play> Plays { get; set; }
-        
+        public virtual User User { get; set; }
+
         public Player(Guid id, string name, string nick)
         {
             Id = id;

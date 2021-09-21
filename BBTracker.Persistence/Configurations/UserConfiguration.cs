@@ -17,6 +17,11 @@ namespace BBTracker.Persistence.Configurations
             builder.HasKey(x => x.Id);
             builder.Property(x => x.UserName).IsRequired();
             builder.Property(x => x.Password).IsRequired();
+
+            builder.HasOne(u => u.Player)
+                .WithOne(p => p.User)
+                .HasForeignKey<User>(u => u.PlayerId)
+                .OnDelete(DeleteBehavior.Restrict);
                 
         }
     }

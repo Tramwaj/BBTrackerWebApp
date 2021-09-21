@@ -12,6 +12,10 @@ namespace BBTracker.Model.Models
         public DateTime CreatedOn { get; set; }
         public ICollection<Game> OwnedGames { get; set; }
 
+        public Guid PlayerId { get; set; }
+        public virtual Player Player { get; set; }
+
+
         public User(Guid id, string userName, string password)
         {
             Id = id;
