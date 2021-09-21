@@ -13,7 +13,7 @@ namespace BBTracker.Model.Models
         public string Street { get; set; }
         public string Number { get; set; }
         public string OfficialName { get; set; }
-        public ICollection<string> OtherNames { get; set; }
+        //public ICollection<string> OtherNames { get; set; }
         public bool IsOutside { get; set; }
 
     }
