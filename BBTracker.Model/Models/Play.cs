@@ -27,6 +27,18 @@ namespace BBTracker.Model.Models
             PlayerId = playerId;
             GameId = gameId;
         }
+
+        protected Play(Guid id, DateTime time, bool isTeamB, Player player, Game game)
+        {
+            Id = id;
+            Time = time;
+            Game = game;
+            Player = player;
+            IsTeamB = isTeamB;
+            PlayerId = player.Id;
+            GameId = game.Id;
+        }
+
         public abstract void UpdateStats(Stats stats);
         
 

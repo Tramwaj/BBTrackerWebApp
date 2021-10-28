@@ -15,6 +15,7 @@ namespace BBTracker.Model.Models
         }
 
         public Steal(Guid id, DateTime time, bool isTeamB, Guid playerId, Guid gameId) : base(id, time, isTeamB, playerId, gameId) { }
+        public Steal(Guid id, DateTime time, bool isTeamB, Player player, Game game) : base(id, time, isTeamB, player, game) { }
 
         public override void UpdateStats(Stats stats)
         {
