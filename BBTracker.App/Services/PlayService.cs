@@ -39,23 +39,23 @@ namespace BBTracker.App.Services
             await _playRepo.AddPlay(play);
         }
 
-        private async Task<bool> PlayerIsOnTheFloor(Guid playerId, Guid gameId)
-        {
-            var _playerSubs = (await _playRepo.GetPlayerGameSubstitutions(playerId, gameId));
-
-            var sub = await _playRepo.GetLastSubByPlayerGame(playerId, gameId);
-            if (!_playerSubs.Any())
-                return false;
-            if (!_playerSubs.LastOrDefault().SubbedIn)
-                return false;
-            else return true;
-        }
         private async Task<bool> PlayIsPossible(Play play)
         {
             if (play is Substitution && ((Substitution)play).SubbedIn)
                 return !await PlayerIsOnTheFloor(play.PlayerId, play.GameId);
             else
                 return await PlayerIsOnTheFloor(play.PlayerId, play.GameId);
+        }
+
+        private async Task<bool> PlayerIsOnTheFloor(Guid playerId, Guid gameId)
+        {
+            var _playerSubs = (await _playRepo.GetPlayerGameSubstitutions(playerId, gameId));
+
+            if (!_playerSubs.Any())
+                return false;
+            if (!_playerSubs.LastOrDefault().SubbedIn)
+                return false;
+            return true;
         }
 
     }

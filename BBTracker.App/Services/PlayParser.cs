@@ -66,7 +66,7 @@ namespace BBTracker.App.Services
             var dto1 = playsBundle.First();
             var dto2 = playsBundle.First(p => p.PlayType.ToLower() == "block");
             var dto3 = playsBundle.First(p => p.PlayType.ToLower() == "rebound");
-            var fg = new FieldGoal(Guid.NewGuid(), DateTime.UtcNow, dto1.IsTeamB, dto1.PlayerId, _gameId, dto1.Points, false, true, false);
+            var fg = new FieldGoal(Guid.NewGuid(), DateTime.Now, dto1.IsTeamB, dto1.PlayerId, _gameId, dto1.Points, false, true, false);
             var block = new Block(Guid.NewGuid(), DateTime.Now, dto2.IsTeamB, dto2.PlayerId, _gameId, fg);
             var rebound = new Rebound(Guid.NewGuid(), DateTime.Now, dto3.IsTeamB, dto3.PlayerId, _gameId, dto1.IsTeamB == dto3.IsTeamB, fg);
             return new List<Play> { fg, block, rebound };
