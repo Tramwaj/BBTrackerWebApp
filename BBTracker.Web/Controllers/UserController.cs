@@ -16,11 +16,13 @@ namespace BBTracker.Web.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IPlayerService _playerService;
+        public UserController(IUserService userService, IPlayerService playerService)
         {
             _userService = userService;
+            _playerService = playerService;
         }
-        [HttpPost]
+        [HttpPost("Create")]
         public async Task<ActionResult> CreateUser([FromBody] CreateUserViewModel createUserViewModel)
         {
             if (await _userService.CreateUser(createUserViewModel))
@@ -28,7 +30,7 @@ namespace BBTracker.Web.Controllers
             else
                 return BadRequest();
         }
-
+        
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromForm] LoginViewModel loginViewModel)
         {

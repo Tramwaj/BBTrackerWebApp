@@ -22,7 +22,7 @@ namespace BBTracker.App.Services
         }
         public async Task<bool> CreateUser(CreateUserViewModel userVM)
         {
-            var allUsers = await _userRepo.GetAllUsersAsync();
+            ICollection<User> allUsers = await _userRepo.GetAllUsersAsync();
             if (allUsers.Any(x => x.UserName == userVM.UserName))
                 return false;
             else
@@ -31,7 +31,8 @@ namespace BBTracker.App.Services
                 await _userRepo.AddAsync(new User(
                     Guid.NewGuid(),
                     userVM.UserName,
-                    hashedPass
+                    hashedPass,
+                    userVM.PlayerId
                     ));
                 return true;
             }

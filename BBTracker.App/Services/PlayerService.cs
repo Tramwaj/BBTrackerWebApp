@@ -34,7 +34,7 @@ namespace BBTracker.App.Services
                 .ToList());
         }
 
-        public async Task<bool> AddPlayer(FullPlayerDTO player)
+        public async Task<bool> AddPlayer(CreatePlayerDTO player)
         {
             var players = await _playersRepository.GetPlayersAsync();
             if (players.Any(x => x.Name == player.Name && x.Nick == player.Nick))

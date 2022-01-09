@@ -23,6 +23,7 @@ namespace BBTracker.Persistence.Repos
 
         public async Task AddAsync(User user)
         {
+            user.Player = await _context.Players.FirstOrDefaultAsync(x=>x.Id==user.PlayerId);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }

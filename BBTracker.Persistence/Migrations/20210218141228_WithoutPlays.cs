@@ -7,8 +7,8 @@ namespace BBTracker.Persistence.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-        //    migrationBuilder.DropTable(
-        //        name: "Plays");
+            migrationBuilder.DropTable(
+                name: "Plays");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

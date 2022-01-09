@@ -34,10 +34,12 @@ namespace BBTracker.App.Services.StatsCounting
                                        .Where(x => x is Substitution)
                                        .Select(x => (Substitution)x);
         }
-        //public static IEnumerable<Period> GetOnCourtPeriods(this IEnumerable<Substitution> subs, Player player = null)
-        //{
-
-        //}
+        public static IEnumerable<Period> GetOnCourtPeriods(this IEnumerable<Substitution> subs, Player player = null)
+        {
+            return subs.Where(x => x.SubbedIn == true)
+                                                               .Zip(subs.Where(x => x.SubbedIn == false), (x, y) => new Period(x.Time, y.Time))
+                                                               .ToList();
+        }
 
 
 

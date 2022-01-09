@@ -205,7 +205,7 @@ namespace BBTracker.App.Services
             if (_plays == null) return await Task.FromResult(false);
             if (await _playsService.AddPlays(_plays) == false)
                 return await Task.FromResult(false);
-            return await Task.FromResult(true);
+            return true;
         }
 
         private async Task<Player> GetPlayer(Guid id) => await _playerRepo.GetPlayerAsync(id);
