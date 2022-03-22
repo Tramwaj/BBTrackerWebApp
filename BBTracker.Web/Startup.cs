@@ -115,7 +115,7 @@ namespace BasketStatsWebApp
             //{
             //    c.SwaggerDoc("v0", new OpenApiInfo { Title = "BasketBall Tracker", Version = "v0" });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

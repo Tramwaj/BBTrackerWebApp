@@ -23,7 +23,7 @@ namespace BasketStatsWebApp.Controllers
             _playerService = playerService;
         }
         [HttpGet]
-        //[Authorize(Roles = "Admin,User")]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<ICollection<FullPlayerDTO>>> Index()
         {
             return Ok(await _playerService.GetAllPlayersDTO()); 
