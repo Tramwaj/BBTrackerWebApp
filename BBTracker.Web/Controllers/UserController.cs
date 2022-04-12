@@ -71,6 +71,9 @@ namespace BBTracker.Web.Controllers
                 new { access_token = tokenHandler.WriteToken(token) }
                 );
         }
+
+        //todo: change password
+
         //[Authorize(Roles = "Admin")]
         //[HttpPost("delete/{id: guid}")]
         //public async Task<ActionResult> DeleteUser(Guid id)
