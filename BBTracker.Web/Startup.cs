@@ -78,17 +78,17 @@ namespace BasketStatsWebApp
                     };
                 });
 
-            services.AddTransient<IPlayerService, PlayerService>();
-            services.AddTransient<IGameService, GameService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IPlayParser, PlayParser>();
-            services.AddTransient<IPlayService, PlayService>();
-            services.AddTransient<IGameListService, GameListService>();
+            services.AddSingleton<IPlayerService, PlayerService>();
+            services.AddSingleton<IGameService, GameService>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IPlayParser, PlayParser>();
+            services.AddSingleton<IPlayService, PlayService>();
+            services.AddSingleton<IGameListService, GameListService>();
 
-            services.AddTransient<GameRepo>();
-            services.AddTransient<PlayerRepo>();
-            services.AddTransient<PlayRepo>();
-            services.AddTransient<UserRepo>();
+            services.AddSingleton<GameRepo>();
+            services.AddSingleton<PlayerRepo>();
+            services.AddSingleton<PlayRepo>();
+            services.AddSingleton<UserRepo>();
 
             services.AddSwaggerGen(c =>
             {
