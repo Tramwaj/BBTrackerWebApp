@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BasketStatsWebApp.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("[controller]")]
     public class HomeController : ControllerBase
     {
@@ -24,10 +24,20 @@ namespace BasketStatsWebApp.Controllers
         [HttpGet]
         public async Task<ActionResult<ICollection<Game>>> Index()
         {
-            ////return RedirectToAction("Index", "Players");
-            
             return Ok(await _gameListService.GetGames(User.Claims));
-            }
+        }
+
+        [HttpGet("Get")]
+        public async Task<ActionResult<string>> Get()
+        {
+            return Ok("bubuububub");
+        }
+        
+        [HttpGet("GetCollection")]
+        public async Task<ActionResult<ICollection<string>>> GetCollection()
+        {
+            return Ok(new List<string>{ "jeden","dwa","trzy"});
+        }
     }
 }
 

@@ -39,15 +39,24 @@ namespace BasketStatsWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //string allowedOrigins = "_myAllowedOrigins";
             services
                 .AddControllers()
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FullPlayerDTO>());
+
+            services.AddCors(options =>options
+                .AddDefaultPolicy(builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                )
+            );
 
             services
                 .AddDbContext<BBTrackerContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection"),
-                    x=>x.MigrationsAssembly("BBTracker.Persistence")));
+                    x => x.MigrationsAssembly("BBTracker.Persistence")));
 
             FluentValidation.ValidatorOptions.Global.LanguageManager.Culture = new System.Globalization.CultureInfo("pl");
 
@@ -69,19 +78,20 @@ namespace BasketStatsWebApp
                     };
                 });
 
-            services.AddSingleton<IPlayerService, PlayerService>();
-            services.AddSingleton<IGameService, GameService>();
-            services.AddSingleton<IUserService,UserService>();
-            services.AddSingleton<IPlayParser, PlayParser>();
-            services.AddSingleton<IPlayService, PlayService>();
-            services.AddSingleton<IGameListService, GameListService>();
+            services.AddTransient<IPlayerService, PlayerService>();
+            services.AddTransient<IGameService, GameService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IPlayParser, PlayParser>();
+            services.AddTransient<IPlayService, PlayService>();
+            services.AddTransient<IGameListService, GameListService>();
 
-            services.AddSingleton<GameRepo>();
-            services.AddSingleton<PlayerRepo>();
-            services.AddSingleton<PlayRepo>();
-            services.AddSingleton<UserRepo>();
+            services.AddTransient<GameRepo>();
+            services.AddTransient<PlayerRepo>();
+            services.AddTransient<PlayRepo>();
+            services.AddTransient<UserRepo>();
 
-            services.AddSwaggerGen(c => {
+            services.AddSwaggerGen(c =>
+            {
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
                 {
                     Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -101,29 +111,23 @@ namespace BasketStatsWebApp
             }
 
 
+            //services.AddSwaggerGen(c =>
+            //{
+            //    c.SwaggerDoc("v0", new OpenApiInfo { Title = "BasketBall Tracker", Version = "v0" });
 
+            //app.UseHttpsRedirection();
 
+            app.UseRouting();
+
+            app.UseCors();
 
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "BBTracker v0.1");
-                
+
             });
-
-            //services.AddSwaggerGen(c =>
-            //{
-            //    c.SwaggerDoc("v0", new OpenApiInfo { Title = "BasketBall Tracker", Version = "v0" });
-                
-            //});
-
-
-
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();

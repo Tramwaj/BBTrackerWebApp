@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 namespace BasketStatsWebApp.Controllers
 {
     [Route("[controller]")]
-    [Authorize(Roles = "Admin,User")]
+    
     public class PlayersController : ControllerBase
     {
         private readonly IPlayerService _playerService;
@@ -23,12 +23,14 @@ namespace BasketStatsWebApp.Controllers
             _playerService = playerService;
         }
         [HttpGet]
+        [Authorize(Roles = "Admin,User")]
         public async Task<ActionResult<ICollection<FullPlayerDTO>>> Index()
         {
             return Ok(await _playerService.GetAllPlayersDTO()); 
         }
 
         [HttpGet("{id:guid}")]
+        //[Authorize(Roles = "Admin,User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         //[ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<FullPlayerDTO>> GetPlayer(Guid id)
@@ -40,7 +42,8 @@ namespace BasketStatsWebApp.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult> AddPlayer([FromBody] FullPlayerDTO player)
+        //todo: add info about "user who added, date"
+        public async Task<ActionResult> AddPlayer([FromBody] CreatePlayerDTO player)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -51,6 +54,7 @@ namespace BasketStatsWebApp.Controllers
         }
         
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Admin,User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
@@ -63,6 +67,7 @@ namespace BasketStatsWebApp.Controllers
                 return BadRequest();
         }
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Admin,User")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

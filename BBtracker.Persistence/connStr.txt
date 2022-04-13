@@ -1,1 +1,1 @@
-﻿Server=.\SQLEXPRESS;Database=BBT;Trusted_Connection=True
+﻿

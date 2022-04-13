@@ -10,6 +10,6 @@ namespace BBTracker.Web.Settings
         public string ValidIssuer { get; set; } = "https://localhost:44347/";
         public string ValidAudience { get; set; } = "https://localhost:44347/";
         public string Secret { get; set; } = "1983646546546546465643kihu";
-        public int LifetimeInSeconds { get; set; } = 3600;
+        public int LifetimeInSeconds { get; set; } = 10800;
     }
 }

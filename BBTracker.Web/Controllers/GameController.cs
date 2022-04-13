@@ -76,20 +76,21 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult> AddPlays([FromBody] AddPlaysToGameViewModel playsVM)
         {
-            if (await _gameService.AddPlays(playsVM))
+            //todo: tu validator 
+            if (ModelState.IsValid && await _gameService.AddPlays(playsVM))
                 return Ok();
             return BadRequest();
         }
         
-        [HttpPost("")]
-        //[HttpPost("endgame")]
+        //[HttpPost("")]
+        [HttpPost("endgame")]
         [HttpPost("{endGameId:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<GameStatsViewModel>>  EndGame(Guid endGameId)
         {
-            var _gameEnded = await _gameService.EndGame(endGameId);
+            GameStatsViewModel _gameEnded = await _gameService.EndGame(endGameId);
             if (_gameEnded == null)
             {
                 return BadRequest();
