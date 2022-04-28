@@ -19,6 +19,7 @@ namespace BBTracker.Contracts.Services
         public Task<bool> AddPlays(AddPlaysToGameViewModel playsVM);
         public Task<bool> CancelPlay(Guid playId);
         Task<SetupGameViewModel> GetAvailablePlayers(ClaimsPrincipal user);
+        Task<GameStatsViewModel> GetGameState(Guid gameId);
     }
 
     public class GameVM

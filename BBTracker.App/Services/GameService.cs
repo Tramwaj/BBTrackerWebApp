@@ -1,18 +1,15 @@
 ﻿using BBTracker.Persistence.Repos;
 using BBTracker.Contracts.Services;
 using BBTracker.Model.Models;
-using Microsoft.Data.SqlClient.DataClassification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using BBTracker.Contracts.ViewModels;
 using System.Security.Claims;
 using BBTracker.App.Mappers;
-using BBTracker.App.Services;
 using BBTracker.App.Interfaces;
+using BBTracker.App.Services.StatsCounting;
 
 namespace BBTracker.App.Services
 {
@@ -90,9 +87,9 @@ namespace BBTracker.App.Services
             return new NewGameViewModel(_game.Id, _game.Start, _teamA, _teamB);
         }
 
-        private static List<Guid> GetTeamGuids(ICollection<GamePlayerDTO> players,bool TeamB)
+        private static List<Guid> GetTeamGuids(ICollection<GamePlayerDTO> players, bool TeamB)
         {
-            return players.Where(p => p.TeamB==TeamB)
+            return players.Where(p => p.TeamB == TeamB)
                 .Select(p => p.Id)
                 .ToList();
         }
@@ -128,10 +125,9 @@ namespace BBTracker.App.Services
             //TODO: podliczenie wyniku
             //TODO: sub out players from the game
             var game = await GetGame(gameId);
-            if (game == null)
+            if (game == null || game.End != null)
                 return null;
-            if (game.End != null)
-                return null;
+
             var end = DateTime.Now;
             await _gameRepo.UpdateEndTime(gameId, end);
             return await CreateGameViewModel(game);
@@ -140,37 +136,10 @@ namespace BBTracker.App.Services
         private async Task<GameStatsViewModel> CreateGameViewModel(Game game)
         {
             var plays = await _gameRepo.GetPlaysByGameId(game.Id);
-
-            var teamAStats = plays
-                .Where(p => !p.IsTeamB)
-                .Select(p => p.PlayerId)
-                .Distinct()
-                .Select(p => new Stats(p))
-                .ToList();
-
-            var teamBStats = plays
-                .Where(p => p.IsTeamB)
-                .Select(p => p.PlayerId)
-                .Distinct()
-                .Select(p => new Stats(p))
-                .ToList();
-            foreach (Play play in game.Plays.Where(p => !p.IsTeamB))
-            {
-                teamAStats.First(s => s.Id == play.PlayerId).ResolvePlay(play);
-            }
-            foreach (Play play in game.Plays.Where(p => p.IsTeamB))
-            {
-                teamBStats.First(s => s.Id == play.PlayerId).ResolvePlay(play);
-            }
-            return new GameStatsViewModel(
-                game.Id,
-                game.Start,
-                (DateTime)game.End,
-                null, null,
-                teamAStats.Select(ts => Mapper.DTOFromStats(ts)).ToList(),
-                teamBStats.Select(ts => Mapper.DTOFromStats(ts)).ToList()
-                );
+            return GameStatsCounter.CreateGameStats(game, plays);
         }
+
+
 
         public async Task<bool> AddPlayersToGame(ICollection<PlayerToGameVM> players)
         {
@@ -220,6 +189,12 @@ namespace BBTracker.App.Services
         public async Task<bool> StartGame()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<GameStatsViewModel> GetGameState(Guid gameId)
+        {
+            var game = await GetGame(gameId);
+            return await CreateGameViewModel(game);
         }
     }
 }

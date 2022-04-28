@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,5 +22,25 @@ namespace BBTracker.Contracts.ViewModels
         public int Steals { get; set; }
         public int Blocks { get; set; }
         public int Turnovers { get; set; }
+        public StatsDTO()
+        {
+
+        }
+        public StatsDTO(ICollection<StatsDTO> dTOs)
+        {
+            PlayerId = Guid.NewGuid();
+            Points = dTOs.Sum(x => x.Points);
+            FieldGoalsMade2p = dTOs.Sum(x => x.FieldGoalsMade2p);
+            FieldGoalsMissed2p = dTOs.Sum(x=>x.FieldGoalsMissed2p);
+            FieldGoalsMade3p = dTOs.Sum(x => x.FieldGoalsMade3p);
+            FieldGoalsMissed3p = dTOs.Sum(y => y.FieldGoalsMissed3p);
+            Assists = dTOs.Sum(x => x.Assists);
+            Rebounds = dTOs.Sum(x => x.Rebounds);
+            DefensiveRebounds = dTOs.Sum(x => x.DefensiveRebounds);
+            OffensiveRebounds = dTOs.Sum(x => x.OffensiveRebounds);
+            Steals = dTOs.Sum(x => x.Steals);
+            Blocks = dTOs.Sum(x => x.Blocks);
+            Turnovers = dTOs.Sum(x => x.Turnovers);
+        }
     }
 }

@@ -81,7 +81,24 @@ namespace BBTracker.Web.Controllers
                 return Ok();
             return BadRequest();
         }
-        
+
+        [HttpGet("{gameId:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+        public async Task<ActionResult<GameStatsViewModel>> GetGameState(Guid gameId)
+        {
+            GameStatsViewModel gameStats = await _gameService.GetGameState(gameId);
+            if (gameStats is null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(gameStats);
+            }
+        }
         //[HttpPost("")]
         [HttpPost("endgame")]
         [HttpPost("{endGameId:guid}")]
