@@ -36,6 +36,8 @@ namespace BBTracker.Persistence.Configurations
                 .HasForeignKey(p => p.PlayerId);
             builder.Property(p => p.GameTime)
                 .IsRequired();
+            builder.Property(p => p.IsTeamB)
+                .IsRequired();
         }
     }
 }

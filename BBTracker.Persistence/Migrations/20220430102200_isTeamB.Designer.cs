@@ -4,14 +4,16 @@ using BBTracker.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BBTracker.Persistence.Migrations
 {
     [DbContext(typeof(BBTrackerContext))]
-    partial class BBTrackerContextModelSnapshot : ModelSnapshot
+    [Migration("20220430102200_isTeamB")]
+    partial class isTeamB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
