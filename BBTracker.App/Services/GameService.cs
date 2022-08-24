@@ -136,7 +136,49 @@ namespace BBTracker.App.Services
         private async Task<GameStatsViewModel> CreateGameViewModel(Game game)
         {
             var plays = await _gameRepo.GetPlaysByGameId(game.Id);
-            return GameStatsCounter.CreateGameStats(game, plays);
+            if (plays.Count == 0)
+            {
+                //todo: na szybko
+                var playerGames = await _gameRepo.GetPlayerGamesByGameId(game.Id);
+                List<StatsDTO> teamA = new();
+                List<StatsDTO> teamB = new();
+                foreach (var playerGame in playerGames)
+                {
+                    var player = await _playerRepo.GetPlayerAsync(playerGame.PlayerId);
+                    var playerStats = new StatsDTO
+                    {
+                        PlayerId = playerGame.PlayerId,
+                        Name = player.Name,
+                        Nick = player.Nick
+                    };
+                    if (!playerGame.TeamB)
+                        teamA.Add(playerStats);
+                    else
+                        teamB.Add(playerStats);
+                }
+                return new GameStatsViewModel
+                {
+                    Id = game.Id,
+                    TeamA = teamA,
+                    TeamB = teamB,
+                    Start = game.Start
+                };
+            }
+
+            var stats = GameStatsCounter.CreateGameStats(game, plays);
+            foreach (var item in stats.TeamA)
+            {
+                var data = await _playerRepo.GetPlayerAsync(item.PlayerId);
+                item.Name = data.Name;
+                item.Nick = data.Nick;
+            }
+            foreach (var item in stats.TeamB)
+            {
+                var data = await _playerRepo.GetPlayerAsync(item.PlayerId);
+                item.Name = data.Name;
+                item.Nick = data.Nick;
+            }
+            return stats;
         }
 
 
@@ -175,6 +217,13 @@ namespace BBTracker.App.Services
             if (await _playsService.AddPlays(_plays) == false)
                 return await Task.FromResult(false);
             return true;
+        }
+
+        public async Task<bool> AddPlaysFromVerbs(string[] plays)
+        {
+            if (plays == null || plays.Length == 0) return await Task.FromResult(false);
+            return true;
+
         }
 
         private async Task<Player> GetPlayer(Guid id) => await _playerRepo.GetPlayerAsync(id);

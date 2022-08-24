@@ -10,6 +10,8 @@ namespace BBTracker.Contracts.ViewModels
     public class StatsDTO
     {
         public Guid PlayerId { get; set; }
+        public string Name { get; set; }
+        public string Nick { get; set; }
         public int Points { get; set; }
         public int FieldGoalsMade2p { get; set; }
         public int FieldGoalsMissed2p { get; set; }
@@ -28,19 +30,22 @@ namespace BBTracker.Contracts.ViewModels
         }
         public StatsDTO(ICollection<StatsDTO> dTOs)
         {
-            PlayerId = Guid.NewGuid();
-            Points = dTOs.Sum(x => x.Points);
-            FieldGoalsMade2p = dTOs.Sum(x => x.FieldGoalsMade2p);
-            FieldGoalsMissed2p = dTOs.Sum(x=>x.FieldGoalsMissed2p);
-            FieldGoalsMade3p = dTOs.Sum(x => x.FieldGoalsMade3p);
-            FieldGoalsMissed3p = dTOs.Sum(y => y.FieldGoalsMissed3p);
-            Assists = dTOs.Sum(x => x.Assists);
-            Rebounds = dTOs.Sum(x => x.Rebounds);
-            DefensiveRebounds = dTOs.Sum(x => x.DefensiveRebounds);
-            OffensiveRebounds = dTOs.Sum(x => x.OffensiveRebounds);
-            Steals = dTOs.Sum(x => x.Steals);
-            Blocks = dTOs.Sum(x => x.Blocks);
-            Turnovers = dTOs.Sum(x => x.Turnovers);
+            if (dTOs != null && dTOs.Count != 0)
+            {
+                PlayerId = Guid.Empty;
+                Points = dTOs.Sum(x => x.Points);
+                FieldGoalsMade2p = dTOs.Sum(x => x.FieldGoalsMade2p);
+                FieldGoalsMissed2p = dTOs.Sum(x => x.FieldGoalsMissed2p);
+                FieldGoalsMade3p = dTOs.Sum(x => x.FieldGoalsMade3p);
+                FieldGoalsMissed3p = dTOs.Sum(y => y.FieldGoalsMissed3p);
+                Assists = dTOs.Sum(x => x.Assists);
+                Rebounds = dTOs.Sum(x => x.Rebounds);
+                DefensiveRebounds = dTOs.Sum(x => x.DefensiveRebounds);
+                OffensiveRebounds = dTOs.Sum(x => x.OffensiveRebounds);
+                Steals = dTOs.Sum(x => x.Steals);
+                Blocks = dTOs.Sum(x => x.Blocks);
+                Turnovers = dTOs.Sum(x => x.Turnovers);
+            }            
         }
     }
 }
