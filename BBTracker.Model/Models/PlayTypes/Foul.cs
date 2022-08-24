@@ -8,7 +8,7 @@ namespace BBTracker.Model.Models
 {
     public class Foul : Play
     {
-        public Player FouledPlayer { get; }
+        public Player FouledPlayer { get; set; }
         public Foul()
         {
 

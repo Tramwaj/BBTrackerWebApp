@@ -5,14 +5,14 @@ namespace BBTracker.Model.Models
 {    
     abstract public class Play
     {
-        public Guid Id { get; }
-        public DateTime Time { get; }
-        public Guid GameId { get; }
+        public Guid Id { get; set; }
+        public DateTime Time { get;set; }
+        public Guid GameId { get;set; }
         public Game Game { get; set; }
-        public Guid PlayerId { get; }
+        public Guid PlayerId { get;set; }
         public Player Player { get; set; }
-        public TimeSpan GameTime { get; }
-        public bool IsTeamB { get; }
+        public TimeSpan GameTime { get;set; }
+        public bool IsTeamB { get;set; }
 
         public Play()
         {

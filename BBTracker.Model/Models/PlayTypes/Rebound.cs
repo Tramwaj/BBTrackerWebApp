@@ -4,7 +4,7 @@ namespace BBTracker.Model.Models
 {
     public class Rebound : Play
     {
-        public bool IsOffensive { get; }
+        public bool IsOffensive { get; set; }
         public FieldGoal FieldGoalRebounded { get; set; }
         public Guid FieldGoalReboundedId { get; set; }
 

@@ -36,11 +36,12 @@ namespace BBTracker.App.Services.StatsCounting
             }
             var teamAStatsDTO = teamAStats.Select(ts => Mapper.DTOFromStats(ts)).ToList();
             var teamBStatsDTO = teamBStats.Select(ts => Mapper.DTOFromStats(ts)).ToList();
+            
 
             return new GameStatsViewModel(
                 game.Id,
                 game.Start,
-                (DateTime)game.End,
+                game.End,
                 new StatsDTO(teamAStatsDTO),
                 new StatsDTO(teamBStatsDTO),
                 teamAStatsDTO,
