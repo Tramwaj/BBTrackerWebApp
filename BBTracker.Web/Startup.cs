@@ -84,6 +84,7 @@ namespace BasketStatsWebApp
             services.AddTransient<IPlayParser, PlayParser>();
             services.AddTransient<IPlayService, PlayService>();
             services.AddTransient<IGameListService, GameListService>();
+            services.AddTransient<IPlayerStatsService, PlayerStatsService>();
 
             services.AddTransient<GameRepo>();
             services.AddTransient<PlayerRepo>();
