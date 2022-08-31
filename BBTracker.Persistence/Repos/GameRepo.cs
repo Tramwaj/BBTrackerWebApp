@@ -22,6 +22,10 @@ namespace BBTracker.Persistence.Repos
         public async Task<ICollection<Game>> GetAllGamesAsync(Guid userId) => await _context.Games.Where(g => g.OwnerId == userId).AsQueryable().ToListAsync();
 
         public async Task<Game> GetGameByIdAsync(Guid id) => await _context.Games.FirstOrDefaultAsync(g => g.Id == id);
+        public async Task<Game> GetFullGameByIdAsync(Guid id) => await _context.Games.Include(g => g.Plays)
+                                                                                     .Include(g => g.PlayerGames)
+                                                                                        .ThenInclude(pg => pg.Player)
+                                                                                     .FirstOrDefaultAsync(g => g.Id == id);
 
         public async Task AddPlayerGame(PlayerGame pg)
         {
@@ -38,7 +42,7 @@ namespace BBTracker.Persistence.Repos
             await _context.SaveChangesAsync();
         }
         //todo: to own repo - with substitutions as a Play
-        
+
         public async Task<ICollection<Play>> GetPlaysByGameId(Guid id) => await _context.Plays.Where(p => p.GameId == id).ToListAsync();
     }
 }
