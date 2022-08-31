@@ -32,6 +32,7 @@ namespace BBTracker.App.Services
                     "sub" => new Substitution(),
                     _ => null
                 });
+            if (playsOut[0] is null) return new List<Play>();
             playsOut[0].GameId = gameId;
             playsOut[0].PlayerId = p1Id;
             playsOut[0].IsTeamB = p1Team;
