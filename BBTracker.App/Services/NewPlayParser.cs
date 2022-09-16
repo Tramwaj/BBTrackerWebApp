@@ -68,6 +68,7 @@ namespace BBTracker.App.Services
             //'made', 'missed', 'blocked'
             if (playsIn[4] == "made")
             {
+                play1.Made = true;
                 if (playsIn[5] == "noassist") play1.WasAssisted = false;
                 else
                 {

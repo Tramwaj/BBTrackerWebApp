@@ -23,7 +23,7 @@ namespace BBTracker.Persistence.Repos
 
         public async Task AddAsync(User user)
         {
-            user.Player = await _context.Players.FirstOrDefaultAsync(x=>x.Id==user.PlayerId);
+            user.Player = await _context.Players.FirstOrDefaultAsync(x => x.Id == user.PlayerId);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
         }
@@ -39,6 +39,39 @@ namespace BBTracker.Persistence.Repos
                 .FirstOrDefaultAsync(p => p.Id == user.Id);
             entity.Password = user.Password;
             await _context.SaveChangesAsync();
+        }
+        public async Task<int> EndInactiveGames()
+        {
+            var gamesNotEnded = await _context.Games.Include(g => g.Plays).Where(g => g.End == null).ToListAsync();
+            int count = 0;
+            var gameIds = gamesNotEnded.Select(g => g.Id);
+            foreach (var gameId in gameIds)
+            {
+                var game = gamesNotEnded.First(g => g.Id == gameId);
+                if (game.Plays.Count() < 1) continue;
+                var lastPlay = _context.Plays.Where(p => p.GameId == game.Id).OrderBy(p => p.GameTime).Last();
+                if (lastPlay.Time.AddMinutes(30) < DateTime.Now)
+                {
+                    game.End = game.Start.Add(lastPlay.GameTime);
+                    var uniquePlayerIds = game.Plays.Select(p => p.PlayerId).Distinct().ToList();
+                    foreach (var playerId in uniquePlayerIds)
+                    {
+                        var player = await _context.Players.FirstOrDefaultAsync(p => p.Id == playerId);
+                        var lastSubstitution = game.Plays.Where((p) => p.Player == player && p is Substitution)
+                                      .OrderBy(p => p.GameTime)
+                                      .Last() as Substitution;
+                        if (lastSubstitution.SubbedIn == true)
+                        {
+                            game.Plays.Add(new Substitution(Guid.NewGuid(), lastPlay.Time, lastSubstitution.IsTeamB, player, game, false));
+                        }
+                    }
+
+                    _context.Update(game);
+                    count++;
+                }
+            }
+            await _context.SaveChangesAsync();
+            return count;
         }
     }
 }

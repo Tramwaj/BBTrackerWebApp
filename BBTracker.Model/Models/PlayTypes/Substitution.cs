@@ -17,10 +17,17 @@ namespace BBTracker.Model.Models
 
         public Substitution(Guid id, DateTime time, bool isTeamB, Player player, Game game, bool subbedIn)
             : base(id, time, isTeamB, player, game) => SubbedIn = subbedIn;
+        public Substitution(DateTime time, bool isTeamB, Player player, Game game, bool subbedIn)
+            : base(time, isTeamB, player, game) => SubbedIn = subbedIn;
 
         public override void UpdateStats(Stats stats)
         {
             stats.Substitutions.Add(new Tuple<TimeSpan, bool>(GameTime, SubbedIn));
+        }
+
+        public override string ToString()
+        {
+            return $"sub,t: {Time} ,gt:{GameTime}, {Id}";
         }
 
     }

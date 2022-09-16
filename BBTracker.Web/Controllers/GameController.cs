@@ -81,6 +81,18 @@ namespace BBTracker.Web.Controllers
                 return Ok();
             return BadRequest();
         }
+        [HttpPost("simpleplays")]
+        [HttpPost("{gameId:guid}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult> AddPlays([FromBody] string[] plays, Guid gameId)
+        {
+            //todo: tu validator 
+            if (ModelState.IsValid && await _gameService.AddPlaysFromVerbs(plays as string[],gameId))
+                return Ok();
+            return BadRequest();
+        }
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -105,7 +117,7 @@ namespace BBTracker.Web.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<GameStatsViewModel>>  EndGame(Guid endGameId)
+        public async Task<ActionResult<GameStatsViewModel>> EndGame(Guid endGameId)
         {
             GameStatsViewModel _gameEnded = await _gameService.EndGame(endGameId);
             if (_gameEnded == null)

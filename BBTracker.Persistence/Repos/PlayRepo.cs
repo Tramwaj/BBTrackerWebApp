@@ -31,12 +31,31 @@ namespace BBTracker.Persistence.Repos
 
         public async Task<Substitution> GetLastSubByPlayerGame(Guid playerId, Guid gameId) => await
             _context.Substitutions.Where(s => s.Player.Id == playerId && s.GameId == gameId)
-                                    .OrderBy(s=>s.Time)
+                                    .OrderBy(s => s.Time)
                                     .LastOrDefaultAsync();
-        
+
+        public async Task<ICollection<Play>> GetAllPlays()
+        {
+            
+            var plays = await _context.Plays.ToListAsync();
+            return plays;
+        }
+
         public async Task AddPlay(Play play)
         {
+            var game = _context.Games.Where(g => g.Id == play.GameId).FirstOrDefault();
+            var start = game.Start;
+            play.GameTime = play.Time - start;
             await _context.Plays.AddAsync(play);
+            if (play is FieldGoal)
+            {
+                if ((play as FieldGoal).Made)
+                {
+                    if (play.IsTeamB) game.ScoreB += (play as FieldGoal).Points;
+                    if (!play.IsTeamB) game.ScoreA += (play as FieldGoal).Points;
+                }
+
+            }
 
             await _context.SaveChangesAsync();
         }

@@ -13,14 +13,19 @@ namespace BBTracker.Contracts.ViewModels
         public string Nick { get; set; }
         public string City { get; set; }
         public double Points { get; set; }
-        public int TwoPointsPercentage { get; set; }
-        public int ThreePointsPercentage { get; set; }
+        public double Eff2p { get; set; }
+        public int Made2p { get; set; }
+        public int Attempted2p { get; set; }
+        public double Eff3p { get; set; }
+        public int Made3p { get; set; }
+        public int Attempted3p { get; set; }
         public double Assists { get; set; }
-        public double DefReB { get; set; }
+        public double DefReb { get; set; }
         public double OffReb { get; set; }
         public double Steals { get; set; }
         public double Turnovers { get; set; }
         public double Minutes { get; set; }
+        
         public PlayerStatsDTO()
         {
 
@@ -32,10 +37,10 @@ namespace BBTracker.Contracts.ViewModels
             Nick = nick;
             City = city;
             Points = points;
-            TwoPointsPercentage = twoPointsPercentage;
-            ThreePointsPercentage = threePointsPercentage;
+            Eff2p = twoPointsPercentage;
+            Eff3p = threePointsPercentage;
             Assists = assists;
-            DefReB = defReB;
+            DefReb = defReB;
             OffReb = offReb;
             Steals = steals;
             Turnovers = turnovers;

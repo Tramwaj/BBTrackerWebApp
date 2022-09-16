@@ -137,6 +137,7 @@ namespace BasketStatsTests
             catch (Exception) { }
         }
 
+        #endregion
 
         [Test]
         public void Lone_steal_gives_proper_play()
@@ -239,7 +240,6 @@ namespace BasketStatsTests
             catch (Exception) { }
         }
 
-        #endregion
 
 
     }

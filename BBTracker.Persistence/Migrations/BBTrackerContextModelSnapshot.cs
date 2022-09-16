@@ -204,8 +204,6 @@ namespace BBTracker.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("FieldGoalId");
-
-                    b.HasDiscriminator().HasValue(0);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Block", b =>
@@ -216,8 +214,6 @@ namespace BBTracker.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasIndex("FieldGoalBlockedId");
-
-                    b.HasDiscriminator().HasValue(1);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.FieldGoal", b =>
@@ -235,15 +231,11 @@ namespace BBTracker.Persistence.Migrations
 
                     b.Property<bool>("WasBlocked")
                         .HasColumnType("bit");
-
-                    b.HasDiscriminator().HasValue(2);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Foul", b =>
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
-
-                    b.HasDiscriminator().HasValue(7);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Rebound", b =>
@@ -257,15 +249,11 @@ namespace BBTracker.Persistence.Migrations
                         .HasColumnType("bit");
 
                     b.HasIndex("FieldGoalReboundedId");
-
-                    b.HasDiscriminator().HasValue(3);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Steal", b =>
                 {
                     b.HasBaseType("BBTracker.Model.Models.Play");
-
-                    b.HasDiscriminator().HasValue(4);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Substitution", b =>
@@ -274,8 +262,6 @@ namespace BBTracker.Persistence.Migrations
 
                     b.Property<bool>("SubbedIn")
                         .HasColumnType("bit");
-
-                    b.HasDiscriminator().HasValue(5);
                 });
 
             modelBuilder.Entity("BBTracker.Model.Models.Turnover", b =>

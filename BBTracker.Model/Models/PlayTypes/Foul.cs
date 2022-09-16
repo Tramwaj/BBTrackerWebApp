@@ -8,7 +8,7 @@ namespace BBTracker.Model.Models
 {
     public class Foul : Play
     {
-        public Player FouledPlayer { get; set; }
+        //public Player FouledPlayer { get; set; }
         public Foul()
         {
 
@@ -16,7 +16,7 @@ namespace BBTracker.Model.Models
 
         public Foul(Guid id, DateTime time, bool isTeamB, Guid playerId, Guid gameId, Player fouledPlayer) : base(id, time, isTeamB, playerId, gameId)
         {
-            FouledPlayer = fouledPlayer;
+            //FouledPlayer = fouledPlayer;
         }
 
         public override void UpdateStats(Stats stats)

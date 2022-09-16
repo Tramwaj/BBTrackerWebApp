@@ -41,6 +41,7 @@ namespace BBTracker.App.Services
         public async Task<bool> Login(LoginViewModel loginVM)
         {
             var user = await GetUser(loginVM.UserName);
+            //int gamesEnded = await _userRepo.EndInactiveGames();
             if (user == null)
                 return false;
             return VerifyPassword(loginVM.Password, user.Password);

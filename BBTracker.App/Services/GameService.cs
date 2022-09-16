@@ -125,6 +125,7 @@ namespace BBTracker.App.Services
             //TODO: podliczenie wyniku
             //TODO: sub out players from the game
             var game = await GetGame(gameId);
+            //var plays = await _gameRepo.GetPlaysByGameId(gameId);
             if (game == null || game.End != null)
                 return null;
 
@@ -219,10 +220,15 @@ namespace BBTracker.App.Services
             return true;
         }
 
-        public async Task<bool> AddPlaysFromVerbs(string[] plays)
+        public async Task<bool> AddPlaysFromVerbs(string[] playVerbs, Guid gameId)
         {
-            if (plays == null || plays.Length == 0) return await Task.FromResult(false);
-            return true;
+            if (playVerbs == null || playVerbs.Length == 0) return await Task.FromResult(false);
+            ICollection<Play> plays = NewPlayParser.ReadPlays(playVerbs, gameId);
+            if (plays == null || plays.Count==0) 
+                return await Task.FromResult(false);
+            if (await _playsService.AddPlays(plays) == false)
+                return await Task.FromResult(false);
+            return await Task.FromResult(true);
 
         }
 

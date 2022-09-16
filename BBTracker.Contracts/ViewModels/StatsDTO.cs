@@ -28,6 +28,10 @@ namespace BBTracker.Contracts.ViewModels
         {
 
         }
+        /// <summary>
+        /// Constructor for creating StatsDTO for a team
+        /// </summary>
+        /// <param name="dTOs"></param>
         public StatsDTO(ICollection<StatsDTO> dTOs)
         {
             if (dTOs != null && dTOs.Count != 0)

@@ -19,6 +19,8 @@ namespace BBTracker.Persistence.Repos
 
         public async Task<ICollection<Player>> GetPlayersAsync() => await _context.Players.AsQueryable().ToListAsync();
 
+        public async Task<ICollection<Player>> GetMultiplePlayersByIdsAsync(IEnumerable<Guid> ids) => await _context.Players.Where(p => ids.Contains(p.Id)).ToListAsync();
+
         public async Task<ICollection<Player>> GetPlayersFromGame(Guid gameId) => await _context.Players
             .Include(p => p.PlayerGames)
             .Where(p => p.PlayerGames
